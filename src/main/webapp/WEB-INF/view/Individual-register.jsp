@@ -5,6 +5,11 @@
 <html>
 <head>
 <title>Gestiunea fluxului de documente in vederea debirocratizarii</title>
+
+	<style>
+		.error {color:red}
+	</style>
+
 </head>
 <body>
 <h2>Individual registration page</h2>
@@ -12,7 +17,38 @@
 
 <br><br>
 
+	<form:form action="processForm_Individual" modelAttribute="user">
 		
+			First name: <form:input path="firstName" />
+			<form:errors path="firstName" cssClass="error" />
+			<br><br>
+		
+			Last name: <form:input path="lastName" />
+			<form:errors path="lastName" cssClass="error" />
+			<br><br>
+			
+			Email Address: <form:input path="emailAddress" />
+			<form:errors path="emailAddress" cssClass="error" />
+			<br><br>
+		
+			PIN: <form:input path="pin" />
+			<form:errors path="pin" cssClass="error" />
+			<br><br>
+			
+			Password: <form:input path="password" />
+			<form:errors path="password" cssClass="error" />
+			<br><br>
+			
+			Confirm password: (for future implementation)
+				
+		<br><br>
+		
+		<input type="submit" value="Submit" />	
+		
+		<br><br>
+		
+	</form:form>		
+			
 
 <br><br>
 </body>

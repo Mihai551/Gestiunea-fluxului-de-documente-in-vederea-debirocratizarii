@@ -6,22 +6,35 @@ import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Component
 @Scope("prototype")
 public class Individual implements User {
 	
-	@Autowired
+
 	private String type = "Individual";
 	
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String firstName;
 	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String lastName;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String pin;
-	
-	private String emailAdress;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
+	private String emailAddress;
+
+	@NotNull(message="is required")
+	@Size(min=6, message="Min length = 6")
 	private String password;
 	
 	private List<String> myStreams;
@@ -53,12 +66,12 @@ public class Individual implements User {
 		this.pin = pin;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getPassword() {
