@@ -2,7 +2,9 @@ package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -12,25 +14,39 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interface
 @Scope("prototype")
 public class Employee implements User {
 	
-	@Autowired
+	
 	private String type = "Employee";
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String legalEntityName;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")	
 	private String firstName;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String lastName;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String pin;
-	
-	private String emailAdress;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
+	private String emailAddress;
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String password;
 	
 	private List<String> myStreams;
 	
 	private List<String> streamsForMe;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String inviteCode;
 
 	public String getLegalEntityName() {
@@ -65,12 +81,12 @@ public class Employee implements User {
 		this.pin = pin;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getPassword() {

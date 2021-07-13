@@ -1,6 +1,5 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
@@ -17,7 +16,7 @@ public class Individual implements User {
 
 	private String type = "Individual";
 	
-	//@NotEmpty(message = "Name may not be empty")
+
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
 	private String firstName;

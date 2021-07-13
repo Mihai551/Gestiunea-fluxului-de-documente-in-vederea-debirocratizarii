@@ -1,28 +1,42 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 @Component
 @Scope("prototype")
 public class LegalEntity implements User {
 	
-	@Autowired
+	
 	private String type = "LegalEntity";	
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")	
 	private String legalEntityName;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String emailAddress;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String country;
-	
-	private String City;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
+	private String city;
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String address;
-	
+
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String password;
 	
 	private List<String> inviteCodes;
@@ -58,11 +72,11 @@ public class LegalEntity implements User {
 	}
 
 	public String getCity() {
-		return City;
+		return city;
 	}
 
 	public void setCity(String city) {
-		City = city;
+		this.city = city;
 	}
 
 	public String getAddress() {

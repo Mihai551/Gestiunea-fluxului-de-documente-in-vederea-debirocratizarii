@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes.AccountType;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes.Employee;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes.Individual;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes.LegalEntity;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 
 
@@ -68,22 +70,38 @@ public class AppController {
 			
 			
 			
-				if ("Legal entity".equals(theAccountType.getAccountType())) {
-				
-				
-				return "Legal-Entity-register";
-				}
+		if ("Legal entity".equals(theAccountType.getAccountType())) {
+		
+			ClassPathXmlApplicationContext context = 
+					new ClassPathXmlApplicationContext("applicationContext.xml");
+			
+			User theUser = context.getBean("legalEntity", User.class);
+			
+			theModel.addAttribute("user", theUser);
+			
+			context.close();
+		
+		return "Legal-Entity-register";
+		}
 			
 			
 			
 			
-					if ("Employee".equals(theAccountType.getAccountType())) {
-				
-				
-				return "Employee-register";
+		if ("Employee".equals(theAccountType.getAccountType())) {
+	
+			ClassPathXmlApplicationContext context = 
+					new ClassPathXmlApplicationContext("applicationContext.xml");
+			
+			User theUser = context.getBean("employee", User.class);
+			
+			theModel.addAttribute("user", theUser);
+			
+			context.close();
+			
+			return "Employee-register";
 					}
 			
-					else return "home";
+		else return "home";
 			
 	
 	}
@@ -99,10 +117,41 @@ public class AppController {
 				return "Individual-register";
 			}
 			else {
-				return "user-confirmation";
+				return "Individual-confirmation";
 			}
 	}
 		
+	//=========================================================================================================================================================
+	
+		@RequestMapping("/processForm_LegalEntity") 
+			public String processForm_LegalEntity(
+					@Valid @ModelAttribute("user") LegalEntity theUser,
+					BindingResult theBindingResult) {
+				
+				if (theBindingResult.hasErrors()) {
+					return "Legal-Entity-register";
+				}
+				else {
+					return "Legal-Entity-confirmation";
+				}
+		}
+			
+		//=========================================================================================================================================================
+		
+		@RequestMapping("/processForm_Employee") 
+			public String processForm_Employee(
+					@Valid @ModelAttribute("user") Employee theUser,
+					BindingResult theBindingResult) {
+				
+				if (theBindingResult.hasErrors()) {
+					return "Employee-register";
+				}
+				else {
+					return "Employee-confirmation";
+				}
+		}
+			
+	
 	
 	
 	
