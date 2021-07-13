@@ -1,21 +1,23 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 import java.util.List;
+
+//import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Component
-@Scope("prototype")
+//@Scope("prototype")
 public class Individual implements User {
 	
 
 	private String type = "Individual";
 	
+	//@NotEmpty(message = "Name may not be empty")
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
 	private String firstName;
