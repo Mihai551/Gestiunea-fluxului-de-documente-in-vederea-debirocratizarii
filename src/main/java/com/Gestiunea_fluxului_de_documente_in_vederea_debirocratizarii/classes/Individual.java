@@ -16,7 +16,7 @@ public class Individual implements User {
 
 	private String type = "Individual";
 	
-
+	
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
 	private String firstName;

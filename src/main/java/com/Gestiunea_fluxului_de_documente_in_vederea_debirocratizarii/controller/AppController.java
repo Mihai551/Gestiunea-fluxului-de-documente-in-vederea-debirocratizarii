@@ -23,13 +23,13 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interface
 public class AppController {
 	
 	
-	@InitBinder
-	public void initBinder(WebDataBinder dataBinder) {
+	//@InitBinder
+	//public void initBinder(WebDataBinder dataBinder) {
 		
-		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		//StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 		
-		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-	}
+		//.registerCustomEditor(String.class, stringTrimmerEditor);
+	//}
 	
 	//=========================================================================================================================================================
 	
