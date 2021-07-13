@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 import java.util.List;
-
 @Component
 @Scope("prototype")
 public class LegalEntity implements User {
