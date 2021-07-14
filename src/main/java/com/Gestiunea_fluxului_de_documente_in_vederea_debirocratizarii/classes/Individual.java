@@ -3,6 +3,10 @@ package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.classes;
 import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 //import javax.validation.constraints.NotEmpty;
@@ -13,95 +17,50 @@ import javax.validation.constraints.Size;
 //@Scope("prototype")
 public class Individual implements User {
 	
-
+	@Getter
 	private String type = "Individual";
 	
 	
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String firstName;
 	
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String lastName;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String pin;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String emailAddress;
 
 	@NotNull(message="is required")
 	@Size(min=6, message="Min length = 6")
+	@Setter
+	@Getter
 	private String password;
 	
+	@Setter
+	@Getter
 	private List<String> myStreams;
 	
+	@Setter
+	@Getter
 	private List<String> streamsForMe;
 
 	
-	public String getFirstName() {
-		return firstName;
-	}
-	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getPin() {
-		return pin;
-	}
-
-	public void setPin(String pin) {
-		this.pin = pin;
-	}
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<String> getMyStreams() {
-		return myStreams;
-	}
-
-	public void setMyStreams(List<String> myStreams) {
-		this.myStreams = myStreams;
-	}
-
-	public List<String> getStreamsForMe() {
-		return streamsForMe;
-	}
-
-	public void setStreamsForMe(List<String> streamsForMe) {
-		this.streamsForMe = streamsForMe;
-	}
-
-	public String getType() {
-		return type;
-	}
 
 	@Override
 	public void addInviteCode(String inviteCode) {

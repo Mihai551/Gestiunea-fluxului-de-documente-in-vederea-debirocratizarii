@@ -10,120 +10,66 @@ import org.springframework.stereotype.Component;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces.User;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Component
 @Scope("prototype")
 public class Employee implements User {
 	
 	
+	@Setter
+	@Getter
 	private String type = "Employee";
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String legalEntityName;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")	
+	@Setter
+	@Getter
 	private String firstName;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String lastName;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String pin;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String emailAddress;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
+	@Setter
+	@Getter
 	private String password;
 	
+	@Setter
+	@Getter
 	private List<String> myStreams;
 	
+	@Setter
+	@Getter
 	private List<String> streamsForMe;
 
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
 	private String inviteCode;
 
-	public String getLegalEntityName() {
-		return legalEntityName;
-	}
-
-	public void setLegalEntityName(String legalEntityName) {
-		this.legalEntityName = legalEntityName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getPin() {
-		return pin;
-	}
-
-	public void setPin(String pin) {
-		this.pin = pin;
-	}
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<String> getMyStreams() {
-		return myStreams;
-	}
-
-	public void setMyStreams(List<String> myStreams) {
-		this.myStreams = myStreams;
-	}
-
-	public List<String> getStreamsForMe() {
-		return streamsForMe;
-	}
-
-	public void setStreamsForMe(List<String> streamsForMe) {
-		this.streamsForMe = streamsForMe;
-	}
-
-	public String getInviteCode() {
-		return inviteCode;
-	}
-
-	public void setInviteCode(String inviteCode) {
-		this.inviteCode = inviteCode;
-	}
-
-	public String getType() {
-		return type;
-	}
 
 	@Override
 	public void addInviteCode(String inviteCode) {
