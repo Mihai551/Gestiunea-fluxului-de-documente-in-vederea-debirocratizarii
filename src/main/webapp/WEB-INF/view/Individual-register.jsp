@@ -17,7 +17,7 @@
 
 <br><br>
 
-	<form:form action="processForm_Individual" modelAttribute="user">
+	<form:form action="processForm_Individual-TEST" modelAttribute="user">
 		
 			First name: <form:input path="firstName" />
 			<form:errors path="firstName" cssClass="error" />
