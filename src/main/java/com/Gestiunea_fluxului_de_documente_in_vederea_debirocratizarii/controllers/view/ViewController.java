@@ -92,7 +92,7 @@ public class ViewController {
 
 	// =========================================================================================================================================================
 
-	@RequestMapping("/processForm_Individual")
+	@RequestMapping("/Individual-confirmation")
 	public String processForm(@Valid @ModelAttribute("user") Individual theUser, BindingResult theBindingResult) {
 
 		if (theBindingResult.hasErrors()) {
