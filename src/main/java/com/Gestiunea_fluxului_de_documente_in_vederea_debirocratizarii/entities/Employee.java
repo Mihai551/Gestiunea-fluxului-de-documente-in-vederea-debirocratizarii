@@ -64,6 +64,8 @@ public class Employee implements User {
 
 	@NotNull(message = "is required")
 	@Size(min = 1, message = "is required")
+	@Setter
+	@Getter
 	private String inviteCode;
 
 	@Override
