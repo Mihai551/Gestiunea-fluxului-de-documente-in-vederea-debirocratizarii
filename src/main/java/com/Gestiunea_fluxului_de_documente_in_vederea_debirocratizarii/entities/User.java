@@ -1,4 +1,4 @@
-package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.interfaces;
+package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities;
 
 import org.springframework.context.annotation.ComponentScan;
 

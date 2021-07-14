@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -28,19 +29,19 @@
 
 		<!-- Spring Security -->
 		<!-- spring-security-web and spring-security-config -->
-		
+
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-web</artifactId>
-		    <version>${springsecurity.version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springsecurity.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-config</artifactId>
-		    <version>${springsecurity.version}</version>
-		</dependency>	
-		
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
+
 		<!-- Servlet, JSP and JSTL support -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -66,16 +67,16 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		
-		
+
+
 
 		<dependency>
-		    <groupId>javax.validation</groupId>
-		    <artifactId>validation-api</artifactId>
-		    <version>1.1.0.Final</version>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
 		</dependency>
-		
-		
+
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -83,9 +84,9 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		
-			
+
+
+
 	</dependencies>
 
 
@@ -94,15 +95,15 @@
 
 	<build>
 		<finalName>Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii</finalName>
-	
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<!-- Add Maven coordinates (GAV) for: maven-war-plugin -->
-				    <groupId>org.apache.maven.plugins</groupId>
-				    <artifactId>maven-war-plugin</artifactId>
-				    <version>3.2.0</version>					
-				</plugin>						
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
