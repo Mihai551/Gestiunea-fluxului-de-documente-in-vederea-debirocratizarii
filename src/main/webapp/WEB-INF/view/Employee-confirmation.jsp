@@ -10,7 +10,7 @@
 
 <body>
 
-	Welcome ${user.firstName} ${user.lastName}
+	Welcome ${user.firstName} ${user.lastName}!
 
 	<br>
 	<br> Use ${user.emailAddress} to log in.

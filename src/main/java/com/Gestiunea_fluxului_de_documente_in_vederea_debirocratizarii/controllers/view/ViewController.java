@@ -92,7 +92,7 @@ public class ViewController {
 
 	// =========================================================================================================================================================
 
-	@RequestMapping("/Individual-confirmation")
+	@RequestMapping("/individual-confirmation")
 	public String processForm(@Valid @ModelAttribute("user") Individual theUser, BindingResult theBindingResult) {
 
 		if (theBindingResult.hasErrors()) {
@@ -104,7 +104,7 @@ public class ViewController {
 
 	// =========================================================================================================================================================
 
-	@RequestMapping("/processForm_LegalEntity")
+	@RequestMapping("/legal-entity-confirmation")
 	public String processForm_LegalEntity(@Valid @ModelAttribute("user") LegalEntity theUser,
 			BindingResult theBindingResult) {
 
@@ -117,7 +117,7 @@ public class ViewController {
 
 	// =========================================================================================================================================================
 
-	@RequestMapping("/processForm_Employee")
+	@RequestMapping("/employee-confirmation")
 	public String processForm_Employee(@Valid @ModelAttribute("user") Employee theUser,
 			BindingResult theBindingResult) {
 

@@ -4,10 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
 
@@ -23,7 +28,8 @@ public class ObjectManagementController {
 
 		theModel.addAttribute("user", theUser);
 
-		return "Individual-confirmation";
+		return "forward:/individual-confirmation";
+
 	}
 
 	@RequestMapping("/processForm-legal-entity")
@@ -33,7 +39,7 @@ public class ObjectManagementController {
 
 		theModel.addAttribute("user", theUser);
 
-		return "Legal-Entity-confirmation";
+		return "forward:/legal-entity-confirmation";
 	}
 
 	@RequestMapping("/processForm-employee")
@@ -43,6 +49,6 @@ public class ObjectManagementController {
 
 		theModel.addAttribute("user", theUser);
 
-		return "Legal-Entity-confirmation";
+		return "forward:/employee-confirmation";
 	}
 }
