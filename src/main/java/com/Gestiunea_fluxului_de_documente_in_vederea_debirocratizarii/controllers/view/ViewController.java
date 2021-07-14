@@ -19,7 +19,7 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.User;
 
 @Controller
-public class AppController {
+public class ViewController {
 
 	// @InitBinder
 	// public void initBinder(WebDataBinder dataBinder) {
