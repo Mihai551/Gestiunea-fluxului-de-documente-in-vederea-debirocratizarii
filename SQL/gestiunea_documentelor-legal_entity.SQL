@@ -1,4 +1,4 @@
-CREATE TABLE `legal_entities` (
+CREATE TABLE `gestiunea_documentelor`.`legal_entity` (
    `legalEntityName` varchar(45) DEFAULT NULL,
    `emailAddress` varchar(45) DEFAULT NULL,
    `country` varchar(45) DEFAULT NULL,

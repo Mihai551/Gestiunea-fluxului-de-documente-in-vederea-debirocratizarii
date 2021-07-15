@@ -7,16 +7,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.AccountType;
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Employee;
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Individual;
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.LegalEntity;
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.User;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
 
 @Controller
 public class ViewController {
@@ -128,4 +121,31 @@ public class ViewController {
 		}
 	}
 
+	@RequestMapping("/login")
+	public String LoginView (Model theModel, @ModelAttribute("accountType") AccountType theAccountType) {
+		
+		SimpleUser theUser = new SimpleUser();
+		theUser.setAccountType(theAccountType.getAccountType());
+		System.out.println(theUser.getAccountType());
+		theModel.addAttribute("SimpleUser", theUser);
+		
+		
+		return "login";
+	}
+	
+	
+	@RequestMapping("/user-menu")
+	public String user_menu (Model theModel, @ModelAttribute("SimpleUser") SimpleUser theUser) {
+		
+		theModel.addAttribute("SimpleUser", theUser);
+		
+		return "user-menu";
+	}
+	
+	
+	@RequestMapping("/error")
+	public String user_menu () {
+		
+		return "login-error";
+	}
 }

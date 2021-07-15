@@ -14,7 +14,7 @@ public class SignUp {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
 					"password");
 			Statement st = conn.createStatement();
-			int i = st.executeUpdate("insert into individuals(firstName,lastName,pin,emailAddress,password)values('"
+			int i = st.executeUpdate("insert into individual(firstName,lastName,pin,emailAddress,password)values('"
 					+ theUser.getFirstName() + "','" + theUser.getLastName() + "','" + theUser.getPin() + "','"
 					+ theUser.getEmailAddress() + "','" + theUser.getPassword() + "')");
 		} catch (Exception e) {
@@ -32,7 +32,7 @@ public class SignUp {
 					"password");
 			Statement st = conn.createStatement();
 			int i = st.executeUpdate(
-					"insert into legal_entities(legalEntityName,emailAddress,country,city,address,password)values('"
+					"insert into legal_entity(legalEntityName,emailAddress,country,city,address,password)values('"
 							+ theUser.getLegalEntityName() + "','" + theUser.getEmailAddress() + "','"
 							+ theUser.getCountry() + "','" + theUser.getCity() + "','" + theUser.getAddress() + "','"
 							+ theUser.getPassword() + "')");
@@ -51,7 +51,7 @@ public class SignUp {
 					"password");
 			Statement st = conn.createStatement();
 			int i = st.executeUpdate(
-					"insert into employees(legalEntityName,firstName,lastName,pin,emailAddress,password,inviteCode)values('"
+					"insert into employee(legalEntityName,firstName,lastName,pin,emailAddress,password,inviteCode)values('"
 							+ theUser.getLegalEntityName() + "','" + theUser.getFirstName() + "','"
 							+ theUser.getLastName() + "','" + theUser.getPin() + "','" + theUser.getEmailAddress()
 							+ "','" + theUser.getPassword() + "','" + theUser.getInviteCode() + "')");
