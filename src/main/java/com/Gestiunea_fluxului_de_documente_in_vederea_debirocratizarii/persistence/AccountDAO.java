@@ -2,13 +2,31 @@ package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persiste
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Employee;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Individual;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.LegalEntity;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
 
-public class SignUp {
+public class AccountDAO {
 
-	public static void Individual(Individual theUser) {
+	public static ResultSet login(SimpleUser theUser) throws ClassNotFoundException, SQLException {
+
+		Class.forName("com.mysql.jdbc.Driver");
+		java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor",
+				"root", "password");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from " + theUser.getAccountType() + " where emailAddress='"
+				+ theUser.getEmailAddress() + "' and password='" + theUser.getPassword() + "'");
+
+		return rs;
+
+	}
+
+	public static void SignUpIndividual(Individual theUser) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
@@ -25,7 +43,7 @@ public class SignUp {
 
 	}
 
-	public static void LegalEntity(LegalEntity theUser) {
+	public static void SignUpLegalEntity(LegalEntity theUser) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
@@ -44,7 +62,7 @@ public class SignUp {
 
 	}
 
-	public static void Employee(Employee theUser) {
+	public static void SignUpEmployee(Employee theUser) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
