@@ -122,30 +122,27 @@ public class ViewController {
 	}
 
 	@RequestMapping("/login")
-	public String LoginView (Model theModel, @ModelAttribute("accountType") AccountType theAccountType) {
-		
+	public String LoginView(Model theModel, @ModelAttribute("accountType") AccountType theAccountType) {
+
 		SimpleUser theUser = new SimpleUser();
 		theUser.setAccountType(theAccountType.getAccountType());
 		System.out.println(theUser.getAccountType());
 		theModel.addAttribute("SimpleUser", theUser);
-		
-		
+
 		return "login";
 	}
-	
-	
+
 	@RequestMapping("/user-menu")
-	public String user_menu (Model theModel, @ModelAttribute("SimpleUser") SimpleUser theUser) {
-		
+	public String user_menu(Model theModel, @ModelAttribute("SimpleUser") SimpleUser theUser) {
+
 		theModel.addAttribute("SimpleUser", theUser);
-		
+
 		return "user-menu";
 	}
-	
-	
+
 	@RequestMapping("/error")
-	public String user_menu () {
-		
+	public String user_menu() {
+
 		return "login-error";
 	}
 }

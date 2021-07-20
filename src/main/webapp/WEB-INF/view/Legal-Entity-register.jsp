@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<h2>Employee registration page</h2>
+<h2>Legal entity registration page</h2>
 <hr>
 
 <br><br>

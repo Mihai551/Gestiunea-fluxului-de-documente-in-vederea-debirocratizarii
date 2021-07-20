@@ -1,5 +1,6 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,7 +15,16 @@ public class AccountServices {
 		ResultSet rs = AccountDAO.login(theUser);
 		try {
 			rs.next();
-			if (rs.getString("password").equals(theUser.getPassword())
+			String salt = rs.getString("salt");
+
+			System.out.println("account services, salt string " + rs.getString("salt"));
+
+			System.out.println("account services, database password " + rs.getString("password"));
+
+			System.out.println("account services, encrypted password"
+					+ EncryptionServices.HashPassword(theUser.getPassword(), salt));
+
+			if (rs.getString("password").equals(EncryptionServices.HashPassword(theUser.getPassword(), salt))
 					&& rs.getString("emailAddress").equals(theUser.getEmailAddress())) {
 				System.out.println("Welcome " + theUser.getEmailAddress());
 
