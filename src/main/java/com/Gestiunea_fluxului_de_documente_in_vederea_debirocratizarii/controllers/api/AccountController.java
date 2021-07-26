@@ -10,7 +10,7 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persisten
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.*;
 
 @Controller
-public class API {
+public class AccountController {
 
 	@RequestMapping("/processForm-Individual")
 	public String register(@ModelAttribute("user") Individual theUser, Model theModel) {

@@ -19,8 +19,8 @@
 
 	<form:form action="processForm-employee" modelAttribute="user">
 		
-			Legal Entity: <form:input path="legalEntityName" />
-			<form:errors path="legalEntityName" cssClass="error" />
+			Legal Entity: <form:input path="legalEntityEmailAddress" />
+			<form:errors path="legalEntityEmailAddress" cssClass="error" />
 			<br><br>
 			
 			First name: <form:input path="firstName" />

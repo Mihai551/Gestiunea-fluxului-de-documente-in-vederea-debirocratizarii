@@ -22,7 +22,7 @@ public class Employee implements User {
 	@Size(min = 1, message = "is required")
 	@Setter
 	@Getter
-	private String legalEntityName;
+	private String legalEntityEmailAddress;
 
 	@NotNull(message = "is required")
 	@Size(min = 1, message = "is required")

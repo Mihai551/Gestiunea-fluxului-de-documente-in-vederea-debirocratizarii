@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
 
 @Controller
-public class ViewController {
+public class AccountViewController {
 
 	// @InitBinder
 	// public void initBinder(WebDataBinder dataBinder) {

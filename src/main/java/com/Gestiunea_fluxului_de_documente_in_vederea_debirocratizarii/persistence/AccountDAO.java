@@ -6,14 +6,37 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Component;
+
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.config.*;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Employee;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Individual;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.LegalEntity;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.EncryptionServices;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.sql.DataSource;
+
 public class AccountDAO {
+	@Setter
+	@Getter
+	@Autowired
+
+	private static SpringJdbcConfig config = new SpringJdbcConfig();
+
+	private static DataSource dataSource = config.dataSource();
+
+	private static JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 	public static ResultSet login(SimpleUser theUser) throws ClassNotFoundException, SQLException {
 
@@ -21,8 +44,7 @@ public class AccountDAO {
 		java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor",
 				"root", "password");
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from " + theUser.getAccountType() + " where emailAddress='"
-				+ theUser.getEmailAddress() + "'");
+		ResultSet rs = st.executeQuery("select * from user where emailAddress='" + theUser.getEmailAddress() + "'");
 
 		return rs;
 
@@ -30,19 +52,24 @@ public class AccountDAO {
 
 	public static void SignUpIndividual(Individual theUser) {
 		try {
-			String salt = new String();
-			salt = EncryptionServices.salt();
-			System.out.println("SignUpIndividual salt String " + salt);
+			String salt = EncryptionServices.salt();
 
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
-					"password");
-			Statement st = conn.createStatement();
-			int i = st.executeUpdate("insert into individual(firstName,lastName,pin,emailAddress,password,salt)values('"
-					+ theUser.getFirstName() + "','" + theUser.getLastName() + "','" + theUser.getPin() + "','"
-					+ theUser.getEmailAddress() + "','" + EncryptionServices.HashPassword(theUser.getPassword(), salt)
-					+ "','" + salt + "')");
-		} catch (Exception e) {
+			jdbcTemplate.update("INSERT INTO USER VALUES (?, ?, ?, ?)", theUser.getEmailAddress(),
+					EncryptionServices.HashPassword(theUser.getPassword(), salt), salt, theUser.getType());
+
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("INDIVIDUAL");
+
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("pin", theUser.getPin());
+			parameters.put("firstName", theUser.getFirstName());
+			parameters.put("lastName", theUser.getLastName());
+			parameters.put("emailAddress", theUser.getEmailAddress());
+
+			simpleJdbcInsert.execute(parameters);
+
+		}
+
+		catch (Exception e) {
 			System.out.print(e);
 			e.printStackTrace();
 
@@ -55,15 +82,20 @@ public class AccountDAO {
 
 			String salt = EncryptionServices.salt();
 
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
-					"password");
-			Statement st = conn.createStatement();
-			int i = st.executeUpdate(
-					"insert into legal_entity(legalEntityName,emailAddress,country,city,address,password,salt)values('"
-							+ theUser.getLegalEntityName() + "','" + theUser.getEmailAddress() + "','"
-							+ theUser.getCountry() + "','" + theUser.getCity() + "','" + theUser.getAddress() + "','"
-							+ EncryptionServices.HashPassword(theUser.getPassword(), salt) + "','" + salt + "')");
+			jdbcTemplate.update("INSERT INTO USER VALUES (?, ?, ?, ?)", theUser.getEmailAddress(),
+					EncryptionServices.HashPassword(theUser.getPassword(), salt), salt, theUser.getType());
+
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("INDIVIDUAL");
+
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("country", theUser.getCountry());
+			parameters.put("legalEntityName", theUser.getLegalEntityName());
+			parameters.put("city", theUser.getCity());
+			parameters.put("address", theUser.getAddress());
+			parameters.put("emailAddress", theUser.getEmailAddress());
+
+			simpleJdbcInsert.execute(parameters);
+
 		} catch (Exception e) {
 			System.out.print(e);
 			e.printStackTrace();
@@ -77,16 +109,19 @@ public class AccountDAO {
 
 			String salt = EncryptionServices.salt();
 
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor", "root",
-					"password");
-			Statement st = conn.createStatement();
-			int i = st.executeUpdate(
-					"insert into employee(legalEntityName,firstName,lastName,pin,emailAddress,password,salt,inviteCode)values('"
-							+ theUser.getLegalEntityName() + "','" + theUser.getFirstName() + "','"
-							+ theUser.getLastName() + "','" + theUser.getPin() + "','" + theUser.getEmailAddress()
-							+ "','" + EncryptionServices.HashPassword(theUser.getPassword(), salt) + "','" + salt
-							+ "','" + theUser.getInviteCode() + "')");
+			jdbcTemplate.update("INSERT INTO USER VALUES (?, ?, ?, ?)", theUser.getEmailAddress(),
+					EncryptionServices.HashPassword(theUser.getPassword(), salt), salt, theUser.getType());
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("INDIVIDUAL");
+
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("pin", theUser.getPin());
+			parameters.put("firstName", theUser.getFirstName());
+			parameters.put("lastName", theUser.getLastName());
+			parameters.put("emailAddress", theUser.getEmailAddress());
+			parameters.put("legalEntityEmailAddress", theUser.getLegalEntityEmailAddress());
+
+			simpleJdbcInsert.execute(parameters);
+
 		} catch (Exception e) {
 			System.out.print(e);
 			e.printStackTrace();

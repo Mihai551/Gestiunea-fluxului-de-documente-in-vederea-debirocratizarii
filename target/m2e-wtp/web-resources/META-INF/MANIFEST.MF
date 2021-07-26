@@ -1,5 +1,11 @@
 Manifest-Version: 1.0
+Implementation-Title: Gestiunea_fluxului_de_documente_in_vederea_debir
+ ocratizarii
+Implementation-Version: 1.0
 Built-By: Mihai
+Implementation-Vendor-Id: com.Gestiunea_fluxului_de_documente_in_veder
+ ea_debirocratizarii
 Build-Jdk: 1.8.0_261
+Implementation-URL: https://spring.io/projects/spring-boot/app
 Created-By: Maven Integration for Eclipse
 
