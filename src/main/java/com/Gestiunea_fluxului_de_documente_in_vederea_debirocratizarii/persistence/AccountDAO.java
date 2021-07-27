@@ -38,15 +38,20 @@ public class AccountDAO {
 
 	private static JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-	public static ResultSet login(SimpleUser theUser) throws ClassNotFoundException, SQLException {
+	public static SimpleUser login(SimpleUser theUser) throws ClassNotFoundException, SQLException {
 
-		Class.forName("com.mysql.jdbc.Driver");
-		java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiunea_documentelor",
-				"root", "password");
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from user where emailAddress='" + theUser.getEmailAddress() + "'");
+		try {
 
-		return rs;
+			String query = String.format("SELECT * FROM USER WHERE emailAddress = ?");
+
+			SimpleUser simpleUser = jdbcTemplate.queryForObject(query, new String[] { theUser.getEmailAddress() },
+					new UserRowMapper());
+
+			return (SimpleUser) simpleUser;
+		} catch (Exception e) {
+
+		}
+		return new SimpleUser();
 
 	}
 

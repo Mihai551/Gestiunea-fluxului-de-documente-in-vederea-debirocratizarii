@@ -122,11 +122,9 @@ public class AccountViewController {
 	}
 
 	@RequestMapping("/login")
-	public String LoginView(Model theModel, @ModelAttribute("accountType") AccountType theAccountType) {
+	public String LoginView(Model theModel) {
 
 		SimpleUser theUser = new SimpleUser();
-		theUser.setAccountType(theAccountType.getAccountType());
-		System.out.println(theUser.getAccountType());
 		theModel.addAttribute("SimpleUser", theUser);
 
 		return "login";

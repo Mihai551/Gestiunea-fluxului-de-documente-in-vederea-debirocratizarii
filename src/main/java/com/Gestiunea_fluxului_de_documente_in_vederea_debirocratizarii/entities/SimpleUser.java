@@ -12,4 +12,6 @@ public class SimpleUser {
 	private String emailAddress;
 
 	private String password;
+	
+	private String salt;
 }

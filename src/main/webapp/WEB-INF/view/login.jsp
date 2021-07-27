@@ -22,7 +22,6 @@
 
 	<br>
 	<br>
-	<c:set var="accountType" value="${AccountType.accountType}" />
 	<form:form action="processForm-login" modelAttribute="SimpleUser">
 		
 			Email Address: <form:input type="text" path="emailAddress" />
@@ -36,8 +35,6 @@
 		<br>
 		<br>
 
-		<form:input path="accountType" value="${SimpleUser.accountType} "
-			cssClass="hidden" />
 
 		<br>
 

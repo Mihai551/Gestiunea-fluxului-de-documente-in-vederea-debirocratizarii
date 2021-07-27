@@ -14,25 +14,10 @@
 
 	<br>
 	<br>
-	<form:form action="login" modelAttribute="accountType">
 
 
-Log in as:
-	
-	<form:select path="accountType">
 
-			<form:option value="individual" />
-			<form:option value="legal_entity" />
-			<form:option value="employee" />
-
-			<br>
-			<br>
-
-			<input type="submit" value="Login" />
-
-
-		</form:select>
-	</form:form>
+<a href="login">Login</a>
 	
 	<br><br>
 

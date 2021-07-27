@@ -12,20 +12,17 @@ public class AccountServices {
 
 	public static boolean login(SimpleUser theUser) throws ClassNotFoundException, SQLException {
 
-		ResultSet rs = AccountDAO.login(theUser);
+		SimpleUser dbUser = AccountDAO.login(theUser);
 		try {
-			rs.next();
-			String salt = rs.getString("salt");
+			System.out.println(dbUser.toString());
+			System.out.println("account services, salt string " + dbUser.getSalt());
 
-			System.out.println("account services, salt string " + rs.getString("salt"));
-
-			System.out.println("account services, database password " + rs.getString("password"));
+			System.out.println("account services, database password " + dbUser.getPassword());
 
 			System.out.println("account services, encrypted password"
-					+ EncryptionServices.HashPassword(theUser.getPassword(), salt));
+					+ EncryptionServices.HashPassword(theUser.getPassword(), dbUser.getSalt()));
 
-			if (rs.getString("password").equals(EncryptionServices.HashPassword(theUser.getPassword(), salt))
-					&& rs.getString("emailAddress").equals(theUser.getEmailAddress())) {
+			if (dbUser.getPassword().equals(EncryptionServices.HashPassword(theUser.getPassword(), dbUser.getSalt()))) {
 				System.out.println("Welcome " + theUser.getEmailAddress());
 
 				return true;
