@@ -132,9 +132,9 @@ public class AccountViewController {
 
 	@RequestMapping("/user-menu")
 	public String user_menu(Model theModel, @ModelAttribute("SimpleUser") SimpleUser theUser) {
-
+	
 		theModel.addAttribute("SimpleUser", theUser);
-
+		
 		return "user-menu";
 	}
 

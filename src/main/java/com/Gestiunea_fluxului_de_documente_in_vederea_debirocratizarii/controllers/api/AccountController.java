@@ -50,6 +50,7 @@ public class AccountController {
 			
 			theModel.addAttribute("SimpleUser", theUser);
 			
+			
 			return "forward:/user-menu";
 		} 
 		else {
