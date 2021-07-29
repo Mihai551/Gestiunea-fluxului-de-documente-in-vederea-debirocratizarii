@@ -16,20 +16,10 @@ public class DocumentServices {
 
 	}
 
-	public static SimplePackage DocumentPackageToSimplePackage(DocumentPackage thePackage) {
-
-		SimplePackage simplePackage = new SimplePackage();
-		simplePackage.setOwnerEmailAddress(thePackage.getOwnerEmailAddress());
-		simplePackage.setPackageName(thePackage.getPackageName());
-		simplePackage.setPackageDescription(thePackage.getDescription());
-
-		return simplePackage;
-
-	}
-
 	public static void addDocument(DocumentPackage thePackage) {
 
-		if (DocumentsDAO.checkDocExistence(thePackage) == false && thePackage.getDocumentContent() != null) {
+		if (DocumentsDAO.checkDocExistence(thePackage) == false && thePackage.getPackageName() != null
+				&& thePackage.getDocumentContent() != null && thePackage.getDocumentName() != null) {
 
 			DocumentsDAO.addDocument(thePackage);
 
@@ -39,7 +29,8 @@ public class DocumentServices {
 
 	public static void addPermission(DocumentPackage thePackage) {
 
-		if (DocumentsDAO.checkPermissionExistence(thePackage) == false && thePackage.getPermission() != null) {
+		if (DocumentsDAO.checkPermissionExistence(thePackage) == false && thePackage.getPermission() != null
+				&& thePackage.getPackageName() != null && thePackage.getPermissionEmailAddress() != null) {
 
 			DocumentsDAO.addPermission(thePackage);
 
