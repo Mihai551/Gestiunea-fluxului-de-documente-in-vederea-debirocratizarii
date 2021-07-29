@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SimplePackage {
-	
+
 	private String ownerEmailAddress;
 	private String packageDescription;
 	private String packageName;

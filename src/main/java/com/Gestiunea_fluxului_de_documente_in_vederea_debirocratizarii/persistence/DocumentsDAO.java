@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.config.SpringJdbcConfig;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Doc;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
@@ -30,7 +31,7 @@ public class DocumentsDAO {
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("documents");
 
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("emailAddress", thePackage.getOwnerEmailAddress());
+		parameters.put("ownerEmailAddress", thePackage.getOwnerEmailAddress());
 		parameters.put("packageName", thePackage.getPackageName());
 		parameters.put("documentName", thePackage.getDocumentName());
 		parameters.put("documentContent", thePackage.getDocumentContent());
@@ -78,6 +79,32 @@ public class DocumentsDAO {
 
 			if ((simplePackage.getOwnerEmailAddress().equalsIgnoreCase(thePackage.getOwnerEmailAddress()))
 					& (simplePackage.getPackageName().equalsIgnoreCase(thePackage.getPackageName()))) {
+
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+
+			return false;
+
+		}
+
+	}
+
+	public static boolean checkDocExistence(DocumentPackage thePackage) {
+
+		try {
+
+			String query = String.format(
+					"SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s' AND documentName = '%s'",
+					thePackage.getOwnerEmailAddress(), thePackage.getPackageName(), thePackage.getDocumentName());
+
+			Doc document = jdbcTemplate.queryForObject(query, new DocumentRowMapper());
+
+			if ((document.getOwnerEmailAddress().equalsIgnoreCase(thePackage.getOwnerEmailAddress()))
+					& (document.getPackageName().equalsIgnoreCase(thePackage.getPackageName()))
+					& (document.getDocumentName().equalsIgnoreCase(thePackage.getDocumentName()))) {
 
 				return true;
 			} else {

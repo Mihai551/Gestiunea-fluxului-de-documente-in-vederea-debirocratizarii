@@ -25,6 +25,17 @@ public class DocumentServices {
 		simplePackage.setPackageName(thePackage.getPackageName());
 		simplePackage.setPackageDescription(thePackage.getDescription());
 
-		return simplePackage;
+		return simplePackage;	
+		
+	}
+	
+	public static void addDocument(DocumentPackage thePackage) {
+		
+		if ( DocumentsDAO.checkDocExistence(thePackage) == false ) {
+			
+			DocumentsDAO.addDocument(thePackage);
+			
+		}
+		
 	}
 }

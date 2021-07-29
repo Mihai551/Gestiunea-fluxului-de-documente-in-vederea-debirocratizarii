@@ -22,6 +22,8 @@ public class Doc {
 	private String documentName;
 	
 	private String IN_FILE;
+	
+	private byte[] documentContent;
 
 	// private List<String> signedBy;
 

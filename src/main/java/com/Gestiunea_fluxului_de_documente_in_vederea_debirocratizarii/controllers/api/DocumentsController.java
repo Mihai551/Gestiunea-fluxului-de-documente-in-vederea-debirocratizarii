@@ -24,8 +24,8 @@ public class DocumentsController {
 
 		byte[] encoded = Doc.pdfToBlob(thePackage.getIN_FILE());
 		thePackage.setDocumentContent(encoded);
-
-		DocumentsDAO.addDocument(thePackage);
+		
+		DocumentServices.addDocument(thePackage);
 
 		// add simple package
 		DocumentServices.pushSimplePackageIfNotExist(DocumentServices.DocumentPackageToSimplePackage(thePackage));
