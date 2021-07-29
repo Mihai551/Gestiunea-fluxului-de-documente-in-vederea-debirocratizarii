@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence.DocumentsDAO;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.DocumentServices;
 
 @Controller
 public class DocumentsController {
@@ -25,6 +26,9 @@ public class DocumentsController {
 		thePackage.setDocumentContent(encoded);
 
 		DocumentsDAO.addDocument(thePackage);
+
+		// add simple package
+		DocumentServices.pushSimplePackageIfNotExist(DocumentServices.DocumentPackageToSimplePackage(thePackage));
 
 		return "forward:/new-package-of-documents";
 
