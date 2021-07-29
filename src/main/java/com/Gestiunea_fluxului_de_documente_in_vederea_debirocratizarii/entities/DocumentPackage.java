@@ -17,9 +17,9 @@ public class DocumentPackage {
 
 	private String description;
 
-	private String permissionView;
+	private String permissionEmailAddress;
 
-	private String permissionSign;
+	private String permission;
 
 	private String IN_FILE;
 

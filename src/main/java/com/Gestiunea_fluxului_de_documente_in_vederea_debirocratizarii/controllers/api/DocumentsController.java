@@ -24,11 +24,15 @@ public class DocumentsController {
 
 		byte[] encoded = Doc.pdfToBlob(thePackage.getIN_FILE());
 		thePackage.setDocumentContent(encoded);
-		
+
+		// add document
 		DocumentServices.addDocument(thePackage);
 
 		// add simple package
 		DocumentServices.pushSimplePackageIfNotExist(DocumentServices.DocumentPackageToSimplePackage(thePackage));
+
+		// add permission
+		DocumentServices.addPermission(thePackage);
 
 		return "forward:/new-package-of-documents";
 

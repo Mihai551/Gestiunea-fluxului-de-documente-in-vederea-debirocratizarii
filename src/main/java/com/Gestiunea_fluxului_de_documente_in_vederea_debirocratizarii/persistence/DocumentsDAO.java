@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.config.SpringJdbcConfig;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Doc;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Permission;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
 
@@ -105,6 +106,46 @@ public class DocumentsDAO {
 			if ((document.getOwnerEmailAddress().equalsIgnoreCase(thePackage.getOwnerEmailAddress()))
 					& (document.getPackageName().equalsIgnoreCase(thePackage.getPackageName()))
 					& (document.getDocumentName().equalsIgnoreCase(thePackage.getDocumentName()))) {
+
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+
+			return false;
+
+		}
+
+	}
+
+	public static void addPermission(DocumentPackage thePackage) {
+
+		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("permissions");
+
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("ownerEmailAddress", thePackage.getOwnerEmailAddress());
+		parameters.put("packageName", thePackage.getPackageName());
+		parameters.put("emailAddress", thePackage.getPermissionEmailAddress());
+		parameters.put("permission", thePackage.getPermission());
+		simpleJdbcInsert.execute(parameters);
+	}
+
+	public static boolean checkPermissionExistence(DocumentPackage thePackage) {
+
+		try {
+
+			String query = String.format(
+					"SELECT * FROM permissions WHERE ownerEmailAddress = '%s' AND packageName = '%s' AND emailAddress = '%s' AND permission = '%s'",
+					thePackage.getOwnerEmailAddress(), thePackage.getPackageName(),
+					thePackage.getPermissionEmailAddress(), thePackage.getPermission());
+
+			Permission thePermission = jdbcTemplate.queryForObject(query, new PermissionRowMapper());
+
+			if ((thePermission.getOwnerEmailAddress().equalsIgnoreCase(thePackage.getOwnerEmailAddress()))
+					& (thePermission.getPackageName().equalsIgnoreCase(thePackage.getPackageName()))
+					& (thePermission.getEmailAddress().equalsIgnoreCase(thePackage.getPermissionEmailAddress()))
+					& (thePermission.getPermission().equalsIgnoreCase(thePackage.getPermission()))) {
 
 				return true;
 			} else {

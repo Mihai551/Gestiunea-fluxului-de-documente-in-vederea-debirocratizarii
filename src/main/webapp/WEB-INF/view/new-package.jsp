@@ -33,12 +33,13 @@
 		<br>
 		<br>
 	
-		Viewer: <form:input type="text" path="permissionView" />
+		Permission: <form:input type="text" path="permissionEmailAddress" />
 
 		<br>
 		<br>
 		
-			Signer: <form:input type="text" path="permissionSign" />
+			<form:input TYPE="radio" name="View" path="permission" value="View"/>View
+			<form:input TYPE="radio" name="Sign" path="permission" value="Sign"/>Sign
 
 		<br>
 		<br>
