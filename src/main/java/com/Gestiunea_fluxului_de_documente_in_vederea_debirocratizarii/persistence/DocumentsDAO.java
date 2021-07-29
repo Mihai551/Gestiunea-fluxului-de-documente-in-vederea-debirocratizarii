@@ -40,14 +40,14 @@ public class DocumentsDAO {
 
 	}
 
-	public static void addPackage(SimplePackage thePackage) {
+	public static void addPackage(DocumentPackage simplePackage) {
 
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("packages");
 
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("ownerEmailAddress", thePackage.getOwnerEmailAddress());
-		parameters.put("packageName", thePackage.getPackageName());
-		parameters.put("packageDescription", thePackage.getPackageDescription());
+		parameters.put("ownerEmailAddress", simplePackage.getOwnerEmailAddress());
+		parameters.put("packageName", simplePackage.getPackageName());
+		parameters.put("packageDescription", simplePackage.getDescription());
 		simpleJdbcInsert.execute(parameters);
 
 	}
@@ -69,7 +69,7 @@ public class DocumentsDAO {
 
 	}
 
-	public static boolean checkExistence(SimplePackage thePackage) {
+	public static boolean checkPackageExistence(DocumentPackage thePackage) {
 
 		try {
 

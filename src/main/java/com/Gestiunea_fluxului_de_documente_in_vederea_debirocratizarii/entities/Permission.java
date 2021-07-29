@@ -6,15 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Permission {
-	
+
 	private String ownerEmailAddress;
-	
+
 	private String packageName;
-	
+
 	private String emailAddress;
-	
+
 	private String permission;
-	
-	
 
 }

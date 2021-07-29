@@ -6,13 +6,11 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persisten
 
 public class DocumentServices {
 
-	public static void pushSimplePackageIfNotExist(SimplePackage simplePackage) {
+	public static void addPackage(DocumentPackage thepackage) {
 
-		boolean exists = DocumentsDAO.checkExistence(simplePackage);
-		System.out.println("EXISTS: " + exists);
-		if (exists == false) {
+		if (DocumentsDAO.checkPackageExistence(thepackage) == false && thepackage.getPackageName() != null) {
 
-			DocumentsDAO.addPackage(simplePackage);
+			DocumentsDAO.addPackage(thepackage);
 
 		}
 
@@ -31,7 +29,7 @@ public class DocumentServices {
 
 	public static void addDocument(DocumentPackage thePackage) {
 
-		if (DocumentsDAO.checkDocExistence(thePackage) == false) {
+		if (DocumentsDAO.checkDocExistence(thePackage) == false && thePackage.getDocumentContent() != null) {
 
 			DocumentsDAO.addDocument(thePackage);
 

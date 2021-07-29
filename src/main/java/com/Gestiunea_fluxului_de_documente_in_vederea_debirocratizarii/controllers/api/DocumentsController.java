@@ -29,7 +29,7 @@ public class DocumentsController {
 		DocumentServices.addDocument(thePackage);
 
 		// add simple package
-		DocumentServices.pushSimplePackageIfNotExist(DocumentServices.DocumentPackageToSimplePackage(thePackage));
+		DocumentServices.addPackage(thePackage);
 
 		// add permission
 		DocumentServices.addPermission(thePackage);

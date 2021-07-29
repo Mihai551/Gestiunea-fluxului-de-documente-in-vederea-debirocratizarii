@@ -24,6 +24,8 @@ public class Doc {
 	private String IN_FILE;
 	
 	private byte[] documentContent;
+	
+	private static boolean isNull; 
 
 	// private List<String> signedBy;
 
@@ -32,10 +34,17 @@ public class Doc {
 	public static byte[] pdfToBlob(String IN_FILE) throws IOException {
 
 		// Convert PDF to BLOB
-
+		
+		
+		try {
 		byte[] inFileBytes = Files.readAllBytes(Paths.get(IN_FILE));
 		byte[] encoded = org.apache.commons.codec.binary.Base64.encodeBase64(inFileBytes);
+		isNull = false;
 		return encoded;
+	} catch (Exception e) {
+		isNull = true;
+		return null;
+	}
 	}
 
 	public static void blobToPdf(byte[] encoded, String fileName) throws IOException {
