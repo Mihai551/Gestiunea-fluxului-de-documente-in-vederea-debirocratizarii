@@ -22,5 +22,7 @@ public class DocumentPackage {
 	private String permission;
 
 	private String IN_FILE;
+	
+	public SimplePackage thePackage;
 
 }

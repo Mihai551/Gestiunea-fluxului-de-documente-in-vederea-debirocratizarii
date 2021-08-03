@@ -39,6 +39,25 @@
 
 	<br>
 	<br>
+	<form:form action="my-packages"
+		modelAttribute="SimpleUser">
+
+		<form:input type="hidden" path="emailAddress"
+			value="${SimplUuser.emailAddress}" />
+		<form:errors path="emailAddress" />
+
+
+		<form:input type="hidden" path="password"
+			value="${SimpleUser.password}" />
+		<form:errors path="password" />
+		<br>
+		<br>
+
+		<input type="submit" value="My packages" />
+	</form:form>
+
+	<br>
+	<br>
 
 
 

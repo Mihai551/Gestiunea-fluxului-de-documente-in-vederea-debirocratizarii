@@ -23,6 +23,8 @@ public class Doc {
 	
 	private String IN_FILE;
 	
+	private String action;
+	
 	private byte[] documentContent;
 	
 	private static boolean isNull; 

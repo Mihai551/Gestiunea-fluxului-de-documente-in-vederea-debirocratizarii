@@ -1,6 +1,11 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -12,6 +17,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.config.SpringJdbcConfig;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Doc;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentsModel;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.PackagesModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Permission;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
@@ -155,6 +162,97 @@ public class DocumentsDAO {
 
 			return false;
 
+		}
+
+	}
+
+	public static PackagesModel pullPackages(SimpleUser theUser) {
+
+		try {
+			
+			String query = String.format("SELECT * FROM packages WHERE ownerEmailAddress = '%s'",
+					theUser.getEmailAddress());
+			
+			List<SimplePackage> packages = new ArrayList<SimplePackage>();
+
+			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
+			
+			int i = 0;
+			
+			while (i < packagesMap.size()) {
+				SimplePackage thePackage = new SimplePackage();
+				thePackage.setOwnerEmailAddress(packagesMap.get(i).get("ownerEmailAddress").toString());
+				thePackage.setPackageName(packagesMap.get(i).get("packageName").toString());
+				thePackage.setPackageDescription(packagesMap.get(i).get("packageDescription").toString());
+				packages.add(thePackage);
+				i++;
+			}
+
+			PackagesModel packagesModel = new PackagesModel();
+			packagesModel.setList(packages);
+			return packagesModel;
+
+		} catch (Exception e) {
+
+			return new PackagesModel();
+		}
+
+	}
+	
+	public static DocumentsModel pullDocuments(SimplePackage thePackage) {
+
+		try {
+			
+			String query = String.format("SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s'",
+					thePackage.getOwnerEmailAddress(), thePackage.getPackageName());
+			
+			List<Doc> documents = new ArrayList<Doc>();
+
+			List<Map<String, Object>> documentsMap = ((jdbcTemplate.queryForList(query)));
+			
+			int i = 0;
+			
+			while (i < documentsMap.size()) {
+				Doc theDocument = new Doc();
+				theDocument.setOwnerEmailAddress(documentsMap.get(i).get("ownerEmailAddress").toString());
+				theDocument.setPackageName(documentsMap.get(i).get("packageName").toString());
+				theDocument.setDocumentName(documentsMap.get(i).get("documentName").toString());
+				theDocument.setDocumentContent((byte[]) (documentsMap.get(i)).get("documentContent"));
+				documents.add(theDocument);
+				i++;
+			}
+
+			DocumentsModel documentsModel = new DocumentsModel();
+			documentsModel.setList(documents);
+			return documentsModel;
+
+		} catch (Exception e) {
+
+			return new DocumentsModel();
+		}
+
+	}
+	
+	public static Doc pullDocument(DocumentsModel document) {
+
+		try {
+			
+			String query = String.format("SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s' AND documentName = '%s'",
+					document.getOwnerEmailAddress(), document.getPackageName(), document.getDocumentName());
+
+			Doc theDocument = jdbcTemplate.queryForObject(query, new DocumentRowMapper());
+			
+			System.out.println("PERSISTANCE  " + theDocument.getDocumentName());
+			System.out.println("PERSISTANCE  " + theDocument.getDocumentContent());
+		
+			return theDocument;
+			
+
+		} catch (Exception e) {
+			
+			System.out.println("PERSISTANCE ERROR");
+
+			return new Doc();
 		}
 
 	}
