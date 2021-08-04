@@ -55,8 +55,6 @@ public class DocumentsControllerView {
 
 	@RequestMapping(value = "my-package", method = RequestMethod.POST)
 	public String myPackage(@ModelAttribute("myPackage") SimplePackage thePackage, Model theModel) {
-		System.out.println(thePackage.getPackageName()); // -- NullPointer
-		System.out.println(thePackage.getOwnerEmailAddress());
 		DocumentsModel documents = new DocumentsModel();
 		documents = DocumentsDAO.pullDocuments(thePackage);
 
@@ -64,5 +62,44 @@ public class DocumentsControllerView {
 		theModel.addAttribute("myPackage", thePackage);
 
 		return "myPackage-documents";
+	}
+
+	@RequestMapping(value = "select-owner", method = RequestMethod.POST)
+	public String selectOwner(@ModelAttribute("SimpleUser") SimpleUser theUser, Model theModel) {
+
+		PackagesModel packages = new PackagesModel();
+		packages.setFromUsers(DocumentsDAO.pullOwnersList(theUser));
+		packages.setForUser(theUser.getEmailAddress());
+
+		theModel.addAttribute("packages", packages);
+
+		return "selectOwner";
+	}
+
+	@RequestMapping(value = "select-package", method = RequestMethod.POST)
+	public String selectPackage(@ModelAttribute("packages") PackagesModel packages, Model theModel) {
+		System.out.println("select-package " + packages.getForUser());
+		packages.list = DocumentsDAO.pullPackagesOfOthers(packages);
+		SimplePackage thePackage = new SimplePackage();
+		thePackage.setPermissionEmailAddress(packages.getForUser());
+		theModel.addAttribute("packages", packages);
+		theModel.addAttribute("thePackage", thePackage);
+
+		return "selectPackage";
+	}
+
+	@RequestMapping(value = "package-for-me", method = RequestMethod.POST)
+	public String packageForMe(@ModelAttribute("thePackage") SimplePackage thePackage, Model theModel) {
+
+		thePackage.setPermission(DocumentsDAO.checkPermission(thePackage));
+
+		DocumentsModel documents = new DocumentsModel();
+		documents = DocumentsDAO.pullDocuments(thePackage);
+
+		theModel.addAttribute("documents", documents);
+		theModel.addAttribute("thePackage", thePackage);
+
+		return "package-for-me";
+
 	}
 }

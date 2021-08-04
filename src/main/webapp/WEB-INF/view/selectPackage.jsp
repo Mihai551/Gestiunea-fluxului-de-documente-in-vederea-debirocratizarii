@@ -16,7 +16,7 @@
 	<br>
 	<br>
 
-	<form:form action="my-package" modelAttribute="myPackage">
+	<form:form action="package-for-me" modelAttribute="thePackage">
 
 
 
@@ -29,7 +29,11 @@
 		</form:select>
 
 		<form:input type="hidden" path="ownerEmailAddress"
-			value="${myPackage.ownerEmailAddress}" />
+			value="${packages.fromUser}" />
+		<form:input type="hidden" path="permission"
+			value="${packages.permission}" />
+		<form:input type="hidden" path="permissionEmailAddress"
+			value="${packages.forUser}" />
 
 		<input type="submit" value="Open package" />
 

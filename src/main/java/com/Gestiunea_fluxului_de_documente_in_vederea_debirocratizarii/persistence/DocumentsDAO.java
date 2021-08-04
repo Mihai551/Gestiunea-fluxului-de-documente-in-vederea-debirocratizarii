@@ -169,16 +169,16 @@ public class DocumentsDAO {
 	public static PackagesModel pullPackages(SimpleUser theUser) {
 
 		try {
-			
+
 			String query = String.format("SELECT * FROM packages WHERE ownerEmailAddress = '%s'",
 					theUser.getEmailAddress());
-			
+
 			List<SimplePackage> packages = new ArrayList<SimplePackage>();
 
 			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
-			
+
 			int i = 0;
-			
+
 			while (i < packagesMap.size()) {
 				SimplePackage thePackage = new SimplePackage();
 				thePackage.setOwnerEmailAddress(packagesMap.get(i).get("ownerEmailAddress").toString());
@@ -198,20 +198,21 @@ public class DocumentsDAO {
 		}
 
 	}
-	
+
 	public static DocumentsModel pullDocuments(SimplePackage thePackage) {
 
 		try {
-			
-			String query = String.format("SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s'",
+
+			String query = String.format(
+					"SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s'",
 					thePackage.getOwnerEmailAddress(), thePackage.getPackageName());
-			
+
 			List<Doc> documents = new ArrayList<Doc>();
 
 			List<Map<String, Object>> documentsMap = ((jdbcTemplate.queryForList(query)));
-			
+
 			int i = 0;
-			
+
 			while (i < documentsMap.size()) {
 				Doc theDocument = new Doc();
 				theDocument.setOwnerEmailAddress(documentsMap.get(i).get("ownerEmailAddress").toString());
@@ -232,28 +233,121 @@ public class DocumentsDAO {
 		}
 
 	}
-	
+
 	public static Doc pullDocument(DocumentsModel document) {
 
 		try {
-			
-			String query = String.format("SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s' AND documentName = '%s'",
+
+			String query = String.format(
+					"SELECT * FROM documents WHERE ownerEmailAddress = '%s' AND packageName = '%s' AND documentName = '%s'",
 					document.getOwnerEmailAddress(), document.getPackageName(), document.getDocumentName());
 
 			Doc theDocument = jdbcTemplate.queryForObject(query, new DocumentRowMapper());
-			
-			System.out.println("PERSISTANCE  " + theDocument.getDocumentName());
-			System.out.println("PERSISTANCE  " + theDocument.getDocumentContent());
-		
+
 			return theDocument;
-			
 
 		} catch (Exception e) {
-			
-			System.out.println("PERSISTANCE ERROR");
+
 
 			return new Doc();
 		}
 
 	}
+
+	public static List<String> pullOwnersList(SimpleUser theUser) {
+
+		try {
+
+			String query = String.format("SELECT * FROM permissions WHERE emailAddress = '%s'",
+					theUser.getEmailAddress());
+
+			List<String> owners = new ArrayList<String>();
+
+			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
+
+			int i = 0;
+
+			while (i < packagesMap.size()) {
+				boolean exists = false;
+				String owner = new String();
+				owner = packagesMap.get(i).get("ownerEmailAddress").toString();
+
+				for (String s : owners) {
+					if (s.equalsIgnoreCase(owner)) {
+						exists = true;
+					}
+				}
+
+				if (!exists) {
+					System.out.println(owner);
+
+					owners.add(owner);
+
+				}
+				i++;
+			}
+			return owners;
+
+		} catch (Exception e) {
+
+			return null;
+		}
+	}
+
+	public static List<SimplePackage> pullPackagesOfOthers(PackagesModel thePackagesModel) {
+
+		try {
+
+			String query = String.format(
+					"SELECT * FROM permissions WHERE ownerEmailAddress = '%s' AND emailAddress = '%s'",
+					thePackagesModel.getFromUser(), thePackagesModel.getForUser());
+
+			List<SimplePackage> packages = new ArrayList<SimplePackage>();
+
+			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
+
+			int i = 0;
+			while (i < packagesMap.size()) {
+				SimplePackage thePackage = new SimplePackage();
+				thePackage.setOwnerEmailAddress(packagesMap.get(i).get("ownerEmailAddress").toString());
+				thePackage.setPackageName(packagesMap.get(i).get("packageName").toString());
+				thePackage.setPermission(packagesMap.get(i).get("permission").toString());
+				thePackage.setPermissionEmailAddress(packagesMap.get(i).get("emailAddress").toString());
+				packages.add(thePackage);
+				i++;
+
+			}
+			return packages;
+
+		} catch (Exception e) {
+
+			return null;
+		}
+
+	}
+
+	public static String checkPermission(SimplePackage thePackage) {
+
+		try {
+
+			String query = String.format(
+					"SELECT * FROM permissions WHERE ownerEmailAddress = '%s' AND emailAddress = '%s' and packageName = '%s'",
+					thePackage.getOwnerEmailAddress(), thePackage.getPermissionEmailAddress(),
+					thePackage.getPackageName());
+
+			String permission;
+
+			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
+
+			permission = packagesMap.get(0).get("permission").toString();
+
+			return permission;
+
+		} catch (Exception e) {
+
+			return null;
+		}
+
+	}
+
 }

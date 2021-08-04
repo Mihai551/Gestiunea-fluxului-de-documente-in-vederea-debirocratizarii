@@ -10,5 +10,8 @@ public class SimplePackage {
 	private String ownerEmailAddress;
 	private String packageDescription;
 	private String packageName;
+	
+	private String permission;
+	private String permissionEmailAddress;
 
 }

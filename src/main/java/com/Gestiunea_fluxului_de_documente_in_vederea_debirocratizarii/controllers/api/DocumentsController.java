@@ -40,19 +40,55 @@ public class DocumentsController {
 
 	@RequestMapping("/my-document")
 	public String viewDoc(@ModelAttribute("documents") DocumentsModel documents, Model theModel) throws IOException {
-		if (documents.getAction().equalsIgnoreCase("View")) {
-			Doc theDocument = DocumentsDAO.pullDocument(documents);
-			System.out.println(theDocument.getDocumentContent());
-			System.out.println(theDocument.getDocumentName());
-			Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-			Doc.openPdf(theDocument.getDocumentName());
-			
+
+		try {
+
+			if (documents.getAction().equalsIgnoreCase("View")) {
+				Doc theDocument = DocumentsDAO.pullDocument(documents);
+				System.out.println(theDocument.getDocumentContent());
+				System.out.println(theDocument.getDocumentName());
+				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				Doc.openPdf(theDocument.getDocumentName());
+			}
+
+			if (documents.getAction().equalsIgnoreCase("Sign")) {
+
+			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
 			myPackage.setPackageName(documents.getOwnerEmailAddress());
-			theModel.addAttribute("myPackage",myPackage);
+			theModel.addAttribute("myPackage", myPackage);
+		} catch (Exception e) {
+
 		}
-		 return "forward:/my-package";
+
+		return "forward:/my-package";
+	}
+
+	@RequestMapping("/document")
+	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel)
+			throws IOException {
+
+		try {
+
+			if (documents.getAction().equalsIgnoreCase("View")) {
+				Doc theDocument = DocumentsDAO.pullDocument(documents);
+				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				Doc.openPdf(theDocument.getDocumentName());
+			}
+
+			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermission().equalsIgnoreCase("Sign")) {
+
+			}
+			SimplePackage myPackage = new SimplePackage();
+			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
+			myPackage.setPackageName(documents.getOwnerEmailAddress());
+			theModel.addAttribute("myPackage", myPackage);
+		} catch (Exception e) {
+
+		}
+
+		return "forward:/package-for-me";
 	}
 
 }

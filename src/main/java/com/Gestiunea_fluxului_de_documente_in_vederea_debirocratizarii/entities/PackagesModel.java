@@ -10,5 +10,10 @@ public class PackagesModel {
 	
 	public List<SimplePackage> list ;
 	public SimplePackage thePackage;
+	private String forUser;
+	private String fromUser;
+	private List<String> fromUsers;
+	private String permission;
+	private String packageName;
 
 }

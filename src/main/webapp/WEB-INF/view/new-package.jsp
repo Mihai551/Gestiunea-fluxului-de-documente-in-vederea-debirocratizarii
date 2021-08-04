@@ -37,9 +37,9 @@
 
 		<br>
 		<br>
-		
-			<form:input TYPE="radio" name="View" path="permission" value="View"/>View
-			<form:input TYPE="radio" name="Sign" path="permission" value="Sign"/>Sign
+
+		<form:input TYPE="radio" name="View" path="permission" value="View" />View
+			<form:input TYPE="radio" name="Sign" path="permission" value="Sign" />Sign
 
 		<br>
 		<br>

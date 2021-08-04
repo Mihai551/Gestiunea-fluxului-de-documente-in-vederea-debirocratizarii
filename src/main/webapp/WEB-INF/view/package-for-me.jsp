@@ -12,12 +12,12 @@
 	<h2>Gestiunea fluxului de documente in vederea debirocratizarii</h2>
 
 	<hr>
-	Package: ${myPackage.packageName}
+	Package: ${thePackage.packageName}
 
 	<br>
 	<br>
 
-	<form:form action="my-document" modelAttribute="documents">
+	<form:form action="document" modelAttribute="documents">
 
 		<form:select path="documentName">
 			<c:forEach items="${documents.list}" var="doc">
@@ -40,10 +40,16 @@
 		<br>
 		<br>
 		<form:input type="hidden" path="ownerEmailAddress"
-			value="${myPackage.ownerEmailAddress}" />
+			value="${thePackage.ownerEmailAddress}" />
 
 		<form:input type="hidden" path="packageName"
-			value="${myPackage.packageName}" />
+			value="${thePackage.packageName}" />
+			
+		<form:input type="hidden" path="permission"
+			value="${thePackage.permission}" />
+			
+		<form:input type="hidden" path="permissionEmailAddress"
+			value="${thePackage.permissionEmailAddress}" />
 
 		<input type="submit" value="Submit" />
 	</form:form>
