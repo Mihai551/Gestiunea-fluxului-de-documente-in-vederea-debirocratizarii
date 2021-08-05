@@ -12,7 +12,7 @@ public class DocumentsModel {
 	public SimplePackage thePackage = new SimplePackage();
 	private String packageName;
 	private String ownerEmailAddress;
-	private String permission;
+	private List<String> permissions;
 	private String permissionEmailAddress;
 
 	public List<Doc> list;

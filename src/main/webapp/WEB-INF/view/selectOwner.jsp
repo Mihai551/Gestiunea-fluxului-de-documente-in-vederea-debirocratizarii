@@ -31,8 +31,6 @@
 		<form:input type="hidden" path="forUser"
 			value="${packages.forUser}" />
 			
-			<form:input type="hidden" path="permission"
-			value="${packages.permission}" />
 
 		<input type="submit" value="Go to packages" />
 

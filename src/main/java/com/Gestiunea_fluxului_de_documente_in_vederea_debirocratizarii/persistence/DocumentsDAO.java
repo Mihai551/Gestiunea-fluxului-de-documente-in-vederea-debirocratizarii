@@ -248,7 +248,6 @@ public class DocumentsDAO {
 
 		} catch (Exception e) {
 
-
 			return new Doc();
 		}
 
@@ -265,26 +264,13 @@ public class DocumentsDAO {
 
 			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
 
-			int i = 0;
-
-			while (i < packagesMap.size()) {
-				boolean exists = false;
+			for (Map<String, Object> thePackage : packagesMap) {
 				String owner = new String();
-				owner = packagesMap.get(i).get("ownerEmailAddress").toString();
+				owner = thePackage.get("ownerEmailAddress").toString();
 
-				for (String s : owners) {
-					if (s.equalsIgnoreCase(owner)) {
-						exists = true;
-					}
-				}
-
-				if (!exists) {
-					System.out.println(owner);
-
+				if (owners.contains(owner) == false) {
 					owners.add(owner);
-
 				}
-				i++;
 			}
 			return owners;
 
@@ -311,7 +297,7 @@ public class DocumentsDAO {
 				SimplePackage thePackage = new SimplePackage();
 				thePackage.setOwnerEmailAddress(packagesMap.get(i).get("ownerEmailAddress").toString());
 				thePackage.setPackageName(packagesMap.get(i).get("packageName").toString());
-				thePackage.setPermission(packagesMap.get(i).get("permission").toString());
+				// thePackage.setPermission(packagesMap.get(i).get("permission").toString());
 				thePackage.setPermissionEmailAddress(packagesMap.get(i).get("emailAddress").toString());
 				packages.add(thePackage);
 				i++;
@@ -326,22 +312,27 @@ public class DocumentsDAO {
 
 	}
 
-	public static String checkPermission(SimplePackage thePackage) {
+	public static List<String> checkPermissions(DocumentsModel documents) {
 
 		try {
 
 			String query = String.format(
 					"SELECT * FROM permissions WHERE ownerEmailAddress = '%s' AND emailAddress = '%s' and packageName = '%s'",
-					thePackage.getOwnerEmailAddress(), thePackage.getPermissionEmailAddress(),
-					thePackage.getPackageName());
+					documents.getOwnerEmailAddress(), documents.getPermissionEmailAddress(),
+					documents.getPackageName());
 
-			String permission;
+			// String permission;
+			List<String> permissions = new ArrayList<String>();
 
 			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query)));
 
-			permission = packagesMap.get(0).get("permission").toString();
+			for (Map<String, Object> x : packagesMap) {
+				permissions.add(x.get("permission").toString());
 
-			return permission;
+			}
+			// permission = packagesMap.get(0).get("permission").toString();
+
+			return permissions;
 
 		} catch (Exception e) {
 

@@ -68,7 +68,12 @@ public class DocumentsController {
 	@RequestMapping("/document")
 	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel)
 			throws IOException {
-
+		
+		documents.setPermissions(DocumentsDAO.checkPermissions(documents));
+		
+		for (String x : documents.getPermissions()) {
+		System.out.println("/document " + x);
+		}
 		try {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
@@ -77,8 +82,8 @@ public class DocumentsController {
 				Doc.openPdf(theDocument.getDocumentName());
 			}
 
-			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermission().equalsIgnoreCase("Sign")) {
-
+			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermissions().contains("Sign")) {
+				System.out.println("Signature: for future implementation");
 			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());

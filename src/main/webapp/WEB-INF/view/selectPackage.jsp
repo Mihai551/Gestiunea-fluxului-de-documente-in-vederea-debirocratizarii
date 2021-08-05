@@ -30,8 +30,7 @@
 
 		<form:input type="hidden" path="ownerEmailAddress"
 			value="${packages.fromUser}" />
-		<form:input type="hidden" path="permission"
-			value="${packages.permission}" />
+		
 		<form:input type="hidden" path="permissionEmailAddress"
 			value="${packages.forUser}" />
 

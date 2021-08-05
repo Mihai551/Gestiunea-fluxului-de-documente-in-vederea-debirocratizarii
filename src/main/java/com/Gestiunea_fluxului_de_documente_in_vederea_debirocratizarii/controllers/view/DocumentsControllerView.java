@@ -91,7 +91,7 @@ public class DocumentsControllerView {
 	@RequestMapping(value = "package-for-me", method = RequestMethod.POST)
 	public String packageForMe(@ModelAttribute("thePackage") SimplePackage thePackage, Model theModel) {
 
-		thePackage.setPermission(DocumentsDAO.checkPermission(thePackage));
+		
 
 		DocumentsModel documents = new DocumentsModel();
 		documents = DocumentsDAO.pullDocuments(thePackage);

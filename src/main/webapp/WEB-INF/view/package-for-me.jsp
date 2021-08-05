@@ -45,8 +45,6 @@
 		<form:input type="hidden" path="packageName"
 			value="${thePackage.packageName}" />
 			
-		<form:input type="hidden" path="permission"
-			value="${thePackage.permission}" />
 			
 		<form:input type="hidden" path="permissionEmailAddress"
 			value="${thePackage.permissionEmailAddress}" />
