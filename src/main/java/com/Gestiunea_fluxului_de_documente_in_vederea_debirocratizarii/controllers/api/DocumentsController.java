@@ -83,7 +83,7 @@ public class DocumentsController {
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermissions().contains("Sign")) {
-				System.out.println("Signature: for future implementation");
+				DocumentServices.Sign(documents);
 			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());

@@ -330,12 +330,46 @@ public class DocumentsDAO {
 				permissions.add(x.get("permission").toString());
 
 			}
-			// permission = packagesMap.get(0).get("permission").toString();
 
 			return permissions;
 
 		} catch (Exception e) {
 
+			return null;
+		}
+
+	}
+
+	public static void Sign(DocumentsModel documents) {
+
+		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("signatures");
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("ownerEmailAddress", documents.getOwnerEmailAddress());
+		parameters.put("packageName", documents.getPackageName());
+		parameters.put("documentName", documents.getDocumentName());
+		parameters.put("signedBy", documents.getPermissionEmailAddress());
+		simpleJdbcInsert.execute(parameters);
+
+	}
+
+	public static List<String> pullSignatures(DocumentsModel documents) {
+
+		try {
+			String query = "SELECT * FROM signatures WHERE ownerEmailAddress = ? and packageName = ? AND documentName = ? AND signedBy = ?";
+			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query, documents.getOwnerEmailAddress(),
+					documents.getPackageName(), documents.getDocumentName(), documents.getPermissionEmailAddress())));
+			List<String> signers = new ArrayList<String>();
+			for (Map<String, Object> thePackage : packagesMap) {
+				String signer = new String();
+				signer = thePackage.get("signedBy").toString();
+
+				if (signers.contains(signer) == false) {
+					signers.add(signer);
+				}
+			}
+			return signers;
+		} catch (Exception e) {
 			return null;
 		}
 

@@ -1,6 +1,7 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentsModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence.DocumentsDAO;
 
@@ -35,5 +36,13 @@ public class DocumentServices {
 			DocumentsDAO.addPermission(thePackage);
 
 		}
+	}
+	
+	public static void Sign(DocumentsModel documents) {
+		if (!DocumentsDAO.pullSignatures(documents).contains(documents.getPermissionEmailAddress())) {
+		DocumentsDAO.Sign(documents);
+		System.out.println(DocumentsDAO.pullSignatures(documents));
+		}
+		
 	}
 }
