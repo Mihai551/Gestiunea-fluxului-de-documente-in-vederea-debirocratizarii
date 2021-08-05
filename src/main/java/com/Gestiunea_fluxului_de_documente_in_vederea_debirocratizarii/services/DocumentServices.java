@@ -1,5 +1,7 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services;
 
+import java.util.List;
+
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentsModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
@@ -37,12 +39,21 @@ public class DocumentServices {
 
 		}
 	}
-	
-	public static void Sign(DocumentsModel documents) {
-		if (!DocumentsDAO.pullSignatures(documents).contains(documents.getPermissionEmailAddress())) {
-		DocumentsDAO.Sign(documents);
-		System.out.println(DocumentsDAO.pullSignatures(documents));
+
+	public static void Sign(DocumentsModel documents, String typeOfSigner) {
+
+		List<String> signers = DocumentsDAO.pullSignatures(documents);
+		if ( (!signers.contains(documents.getOwnerEmailAddress()) ) && typeOfSigner.equalsIgnoreCase("owner")) {
+
+			DocumentsDAO.Sign(documents, typeOfSigner);
+			System.out.println(DocumentsDAO.pullSignatures(documents));
 		}
-		
+
+		if ((!signers.contains(documents.getPermissionEmailAddress())) && !(typeOfSigner.equalsIgnoreCase("owner"))) {
+
+			DocumentsDAO.Sign(documents, typeOfSigner);
+			System.out.println(DocumentsDAO.pullSignatures(documents));
+		}
+
 	}
 }

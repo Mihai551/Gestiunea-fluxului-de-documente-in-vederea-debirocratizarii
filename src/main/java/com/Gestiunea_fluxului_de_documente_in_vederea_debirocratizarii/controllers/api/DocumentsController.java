@@ -52,6 +52,7 @@ public class DocumentsController {
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign")) {
+				DocumentServices.Sign(documents, "owner");
 
 			}
 			SimplePackage myPackage = new SimplePackage();
@@ -83,7 +84,7 @@ public class DocumentsController {
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermissions().contains("Sign")) {
-				DocumentServices.Sign(documents);
+				DocumentServices.Sign(documents, "notOwner");
 			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());

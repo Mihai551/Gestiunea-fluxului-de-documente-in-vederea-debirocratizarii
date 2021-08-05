@@ -340,25 +340,38 @@ public class DocumentsDAO {
 
 	}
 
-	public static void Sign(DocumentsModel documents) {
+	public static void Sign(DocumentsModel documents, String typeOfSigner) {
+		if (typeOfSigner.equalsIgnoreCase("owner")) {
 
-		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("signatures");
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("signatures");
 
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("ownerEmailAddress", documents.getOwnerEmailAddress());
-		parameters.put("packageName", documents.getPackageName());
-		parameters.put("documentName", documents.getDocumentName());
-		parameters.put("signedBy", documents.getPermissionEmailAddress());
-		simpleJdbcInsert.execute(parameters);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("ownerEmailAddress", documents.getOwnerEmailAddress());
+			parameters.put("packageName", documents.getPackageName());
+			parameters.put("documentName", documents.getDocumentName());
+			parameters.put("signedBy", documents.getOwnerEmailAddress());
+			simpleJdbcInsert.execute(parameters);
+
+		} else {
+
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("signatures");
+
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("ownerEmailAddress", documents.getOwnerEmailAddress());
+			parameters.put("packageName", documents.getPackageName());
+			parameters.put("documentName", documents.getDocumentName());
+			parameters.put("signedBy", documents.getPermissionEmailAddress());
+			simpleJdbcInsert.execute(parameters);
+		}
 
 	}
 
 	public static List<String> pullSignatures(DocumentsModel documents) {
 
 		try {
-			String query = "SELECT * FROM signatures WHERE ownerEmailAddress = ? and packageName = ? AND documentName = ? AND signedBy = ?";
+			String query = "SELECT * FROM signatures WHERE ownerEmailAddress = ? and packageName = ? AND documentName = ?";
 			List<Map<String, Object>> packagesMap = ((jdbcTemplate.queryForList(query, documents.getOwnerEmailAddress(),
-					documents.getPackageName(), documents.getDocumentName(), documents.getPermissionEmailAddress())));
+					documents.getPackageName(), documents.getDocumentName())));
 			List<String> signers = new ArrayList<String>();
 			for (Map<String, Object> thePackage : packagesMap) {
 				String signer = new String();
