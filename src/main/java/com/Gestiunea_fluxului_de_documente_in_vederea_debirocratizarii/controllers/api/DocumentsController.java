@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence.DocumentsDAO;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.DocumentServices;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.SignatureServices;
 
 @Controller
 public class DocumentsController {
@@ -48,7 +49,7 @@ public class DocumentsController {
 				System.out.println(theDocument.getDocumentContent());
 				System.out.println(theDocument.getDocumentName());
 				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				DocumentServices.digitalSignatures(documents);
+				SignatureServices.digitalSignatures(documents);
 				Doc.openPdf(theDocument.getDocumentName());
 			}
 
@@ -81,7 +82,7 @@ public class DocumentsController {
 			if (documents.getAction().equalsIgnoreCase("View")) {
 				Doc theDocument = DocumentsDAO.pullDocument(documents);
 				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				DocumentServices.digitalSignatures(documents);
+				SignatureServices.digitalSignatures(documents);
 				Doc.openPdf(theDocument.getDocumentName());
 			}
 
