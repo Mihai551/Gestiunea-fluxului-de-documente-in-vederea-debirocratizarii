@@ -48,6 +48,7 @@ public class DocumentsController {
 				System.out.println(theDocument.getDocumentContent());
 				System.out.println(theDocument.getDocumentName());
 				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				DocumentServices.digitalSignatures(documents);
 				Doc.openPdf(theDocument.getDocumentName());
 			}
 
@@ -80,6 +81,7 @@ public class DocumentsController {
 			if (documents.getAction().equalsIgnoreCase("View")) {
 				Doc theDocument = DocumentsDAO.pullDocument(documents);
 				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				DocumentServices.digitalSignatures(documents);
 				Doc.openPdf(theDocument.getDocumentName());
 			}
 

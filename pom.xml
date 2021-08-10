@@ -27,8 +27,27 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	<repositories>
+
+		<!--<repository> <id>com.e-iceblue</id> <name>e-iceblue</name> <url>https://repo.e-iceblue.com/nexus/content/groups/public/</url> 
+			</repository> -->
+
+		<repository>
+			<id>AsposeJavaAPI</id>
+			<name>Aspose Java API</name>
+			<url>https://repository.aspose.com/repo/</url>
+		</repository>
+
+	</repositories>
 
 	<dependencies>
+
+
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-pdf</artifactId>
+			<version>20.6</version>
+		</dependency>
 
 		<!-- Spring MVC support -->
 		<dependency>
@@ -36,6 +55,8 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
+
+
 
 		<dependency>
 			<groupId>commons-codec</groupId>
