@@ -41,6 +41,15 @@ public class DocumentServices {
 
 			DocumentsDAO.addPermission(thePackage);
 
+			String text = String.format("Utilizatorul %s v-a acordat permisiunea '%s' la pachetul  %s .",
+					thePackage.getOwnerEmailAddress(), thePackage.getPermission(), thePackage.getPackageName());
+			try {
+				EmailService email = new EmailService(thePackage.getPermissionEmailAddress(), "new permission", text);
+				email.start();
+			} catch (Exception e) {
+
+			}
+
 		}
 	}
 
@@ -50,6 +59,7 @@ public class DocumentServices {
 		if ((!signers.contains(documents.getOwnerEmailAddress())) && typeOfSigner.equalsIgnoreCase("owner")) {
 
 			DocumentsDAO.Sign(documents, typeOfSigner);
+
 			System.out.println(DocumentsDAO.pullSignatures(documents));
 		}
 
@@ -57,9 +67,17 @@ public class DocumentServices {
 
 			DocumentsDAO.Sign(documents, typeOfSigner);
 			System.out.println(DocumentsDAO.pullSignatures(documents));
+
+			String text = String.format("Utilizatorul %s a semnat documentul '%s' din pachetul  %s .",
+					documents.getPermissionEmailAddress(), documents.getDocumentName(), documents.getPackageName());
+			try {
+				EmailService email = new EmailService(documents.getOwnerEmailAddress(), "new signature", text);
+				email.start();
+			} catch (Exception e) {
+
+			}
 		}
 
 	}
 
-	
 }
