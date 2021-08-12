@@ -18,6 +18,7 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Permission;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.OtherServices;
 
 public class DocumentsDAO {
 
@@ -287,7 +288,11 @@ public class DocumentsDAO {
 				thePackage.setOwnerEmailAddress(packagesMap.get(i).get("ownerEmailAddress").toString());
 				thePackage.setPackageName(packagesMap.get(i).get("packageName").toString());
 				thePackage.setPermissionEmailAddress(packagesMap.get(i).get("emailAddress").toString());
-				packages.add(thePackage);
+
+				if (!OtherServices.containsPackageName(packages, thePackage.getPackageName())) {
+					packages.add(thePackage);
+				}
+
 				i++;
 
 			}

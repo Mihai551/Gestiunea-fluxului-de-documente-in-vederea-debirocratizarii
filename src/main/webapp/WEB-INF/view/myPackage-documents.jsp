@@ -36,6 +36,8 @@
 		<br>
 		<form:input TYPE="radio" name="View" path="action" value="View" />View
 			<form:input TYPE="radio" name="Sign" path="action" value="Sign" />Sign
+				<form:input TYPE="radio" name="Sign" path="action"
+			value="Signatures" />Signatures
 
 		<br>
 		<br>
@@ -47,3 +49,13 @@
 
 		<input type="submit" value="Submit" />
 	</form:form>
+
+
+	<br>
+	<br>
+
+	<c:forEach items="${signatures}" var="signature">
+		<td>Signed by: ${signature}<br>
+		<br>
+		<td>
+	</c:forEach>

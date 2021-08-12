@@ -1,6 +1,7 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.controllers.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class DocumentsController {
 	}
 
 	@RequestMapping("/my-document")
-	public String viewDoc(@ModelAttribute("documents") DocumentsModel documents, Model theModel) throws IOException {
+	public String viewDoc(@ModelAttribute("documents") DocumentsModel documents, Model theModel) throws Exception {
 
 		try {
 
@@ -61,6 +62,13 @@ public class DocumentsController {
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
 			myPackage.setPackageName(documents.getOwnerEmailAddress());
 			theModel.addAttribute("myPackage", myPackage);
+
+			if (documents.getAction().equalsIgnoreCase("Signatures")) {
+
+				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
+				theModel.addAttribute("signatures", signatures);
+			}
+
 		} catch (Exception e) {
 
 		}
@@ -70,12 +78,12 @@ public class DocumentsController {
 
 	@RequestMapping("/document")
 	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel)
-			throws IOException {
-		
+			throws Exception {
+
 		documents.setPermissions(DocumentsDAO.checkPermissions(documents));
-		
+
 		for (String x : documents.getPermissions()) {
-		System.out.println("/document " + x);
+			System.out.println("/document " + x);
 		}
 		try {
 
@@ -93,6 +101,13 @@ public class DocumentsController {
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
 			myPackage.setPackageName(documents.getOwnerEmailAddress());
 			theModel.addAttribute("myPackage", myPackage);
+
+			if (documents.getAction().equalsIgnoreCase("Signatures")) {
+
+				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
+				theModel.addAttribute("signatures", signatures);
+			}
+
 		} catch (Exception e) {
 
 		}
