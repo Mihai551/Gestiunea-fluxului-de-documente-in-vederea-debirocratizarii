@@ -64,7 +64,9 @@ public class DocumentsController {
 			theModel.addAttribute("myPackage", myPackage);
 
 			if (documents.getAction().equalsIgnoreCase("Signatures")) {
-
+				Doc theDocument = DocumentsDAO.pullDocument(documents);
+				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				SignatureServices.digitalSignatures(documents);
 				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
 				theModel.addAttribute("signatures", signatures);
 			}
@@ -103,7 +105,9 @@ public class DocumentsController {
 			theModel.addAttribute("myPackage", myPackage);
 
 			if (documents.getAction().equalsIgnoreCase("Signatures")) {
-
+				Doc theDocument = DocumentsDAO.pullDocument(documents);
+				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
+				SignatureServices.digitalSignatures(documents);
 				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
 				theModel.addAttribute("signatures", signatures);
 			}
