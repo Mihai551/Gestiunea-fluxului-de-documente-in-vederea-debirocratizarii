@@ -1,12 +1,19 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.controllers.api;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.*;
@@ -27,35 +34,30 @@ public class DocumentsController {
 		byte[] encoded = Doc.pdfToBlob(thePackage.getIN_FILE());
 		thePackage.setDocumentContent(encoded);
 
-		// add document
-		DocumentServices.addDocument(thePackage);
 
 		// add simple package
 		DocumentServices.addPackage(thePackage);
-
-		// add permission
-		DocumentServices.addPermission(thePackage);
 
 		return "forward:/new-package-of-documents";
 
 	}
 
 	@RequestMapping("/my-document")
-	public String viewDoc(@ModelAttribute("documents") DocumentsModel documents, Model theModel) throws Exception {
+	public String viewDoc(HttpServletRequest request, @ModelAttribute("documents") DocumentsModel documents, Model theModel) throws Exception {
 
 		try {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
-				Doc theDocument = DocumentsDAO.pullDocument(documents);
-				System.out.println(theDocument.getDocumentContent());
-				System.out.println(theDocument.getDocumentName());
-				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				SignatureServices.digitalSignatures(documents);
-				Doc.openPdf(theDocument.getDocumentName());
+				request.setAttribute("documents", documents);
+				return "forward:/getPDF";
+
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign")) {
-				DocumentServices.Sign(documents, "owner");
+				if (DocumentServices.Sign(documents, "owner")) {
+					SignatureServices.digitalSign(documents.getOwnerEmailAddress(), documents.getPackageName(),
+							documents.getDocumentName(), documents.getOwnerEmailAddress());
+				}
 
 			}
 			SimplePackage myPackage = new SimplePackage();
@@ -64,9 +66,9 @@ public class DocumentsController {
 			theModel.addAttribute("myPackage", myPackage);
 
 			if (documents.getAction().equalsIgnoreCase("Signatures")) {
-				Doc theDocument = DocumentsDAO.pullDocument(documents);
-				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				SignatureServices.digitalSignatures(documents);
+
+				// de regandit
+
 				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
 				theModel.addAttribute("signatures", signatures);
 			}
@@ -79,7 +81,7 @@ public class DocumentsController {
 	}
 
 	@RequestMapping("/document")
-	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel)
+	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel, HttpServletResponse response)
 			throws Exception {
 
 		documents.setPermissions(DocumentsDAO.checkPermissions(documents));
@@ -90,14 +92,18 @@ public class DocumentsController {
 		try {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
-				Doc theDocument = DocumentsDAO.pullDocument(documents);
-				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				SignatureServices.digitalSignatures(documents);
-				Doc.openPdf(theDocument.getDocumentName());
+
+				
+				
+				return "forward:/getPDF";
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermissions().contains("Sign")) {
-				DocumentServices.Sign(documents, "notOwner");
+				if (DocumentServices.Sign(documents, "notOwner")) {
+					SignatureServices.digitalSign(documents.getOwnerEmailAddress(), documents.getPackageName(),
+							documents.getDocumentName(), documents.getPermissionEmailAddress());
+
+				}
 			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
@@ -105,9 +111,9 @@ public class DocumentsController {
 			theModel.addAttribute("myPackage", myPackage);
 
 			if (documents.getAction().equalsIgnoreCase("Signatures")) {
-				Doc theDocument = DocumentsDAO.pullDocument(documents);
-				Doc.blobToPdf(theDocument.getDocumentContent(), theDocument.getDocumentName());
-				SignatureServices.digitalSignatures(documents);
+
+				// de regandit
+
 				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
 				theModel.addAttribute("signatures", signatures);
 			}
@@ -117,6 +123,22 @@ public class DocumentsController {
 		}
 
 		return "forward:/package-for-me";
+	}
+	
+	@PostMapping("/add-permission")
+	public String addPermission(HttpServletRequest request) {
+		DocumentPackage thePackage = new DocumentPackage();
+		
+		thePackage.setOwnerEmailAddress(request.getParameter("ownerEmailAddress"));
+		thePackage.setPackageName(request.getParameter("packageName"));
+		thePackage.setPermission(request.getParameter("permission"));
+		thePackage.setPermissionEmailAddress(request.getParameter("permissionEmailAddress"));
+		
+		// add permission
+		DocumentServices.addPermission(thePackage);
+		
+		return "forward:/my-package";
+		
 	}
 
 }

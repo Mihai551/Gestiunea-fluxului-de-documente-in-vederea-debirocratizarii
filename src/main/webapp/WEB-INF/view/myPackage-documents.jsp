@@ -54,8 +54,31 @@
 	<br>
 	<br>
 
+	<form action="upload" method="post" enctype="multipart/form-data">
+		Add new document: <br> <br> <input type="text"
+			name="documentName" value=documentName /> <input type="file"
+			name="file" /> <br> <br> <input type="hidden"
+			name="ownerEmailAddress" value="${myPackage.ownerEmailAddress}" /> <input
+			type="hidden" name="packageName" value="${myPackage.packageName}" />
+		<input type="submit" />
+
+	</form>
+
+	<form action="add-permission" method="post">
+
+		<br> <br> Permission: <input type="text"
+			name="permissionEmailAddress" /> <br> <br> <input
+			TYPE="radio" name="permission" value="View" />View <input
+			TYPE="radio" name="permission" value="Sign" />Sign <br> <br>
+
+		<input type="hidden" name="ownerEmailAddress"
+			value="${myPackage.ownerEmailAddress}" /> <input type="hidden"
+			name="packageName" value="${myPackage.packageName}" /> <input
+			type="submit" value="Submit" />
+
+	</form>
+
 	<c:forEach items="${signatures}" var="signature">
-		<td>Signed by: ${signature}<br>
-		<br>
+		<td>Signed by: ${signature}<br> <br>
 		<td>
 	</c:forEach>

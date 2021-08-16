@@ -36,7 +36,7 @@ public class DocumentsDAO {
 		parameters.put("ownerEmailAddress", thePackage.getOwnerEmailAddress());
 		parameters.put("packageName", thePackage.getPackageName());
 		parameters.put("documentName", thePackage.getDocumentName());
-		parameters.put("documentContent", thePackage.getDocumentContent());
+		//parameters.put("documentContent", thePackage.getDocumentContent());
 		simpleJdbcInsert.execute(parameters);
 
 	}
@@ -226,7 +226,7 @@ public class DocumentsDAO {
 
 	}
 
-	public static Doc pullDocument(DocumentsModel document) {
+	public static Doc pullDocument(DocumentPackage document) {
 
 		try {
 
@@ -244,6 +244,8 @@ public class DocumentsDAO {
 		}
 
 	}
+	
+	
 
 	public static List<String> pullOwnersList(SimpleUser theUser) {
 

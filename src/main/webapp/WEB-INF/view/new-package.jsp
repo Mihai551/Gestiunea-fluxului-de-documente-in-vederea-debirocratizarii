@@ -21,9 +21,9 @@
 
 	<form:form action="processForm-new-package" modelAttribute="package">
 		
-        
-			Package name: <form:input type="text" path="packageName"
-			value="${package1.packageName}" />
+       <form:input type="hidden" path="ownerEmailAddress"
+			value="${SimpleUser.emailAddress}" />
+			Package name: <form:input type="text" path="packageName" />
 
 		<br>
 		<br>
@@ -32,39 +32,8 @@
 
 		<br>
 		<br>
-	
-		Permission: <form:input type="text" path="permissionEmailAddress" />
-
-		<br>
-		<br>
-
-		<form:input TYPE="radio" name="View" path="permission" value="View" />View
-			<form:input TYPE="radio" name="Sign" path="permission" value="Sign" />Sign
-
-		<br>
-		<br>
-		
-		File name: <form:input type="text" path="documentName" />
-
-
-		<br>
-		<br>
-		
-		File Path: <form:input type="text" path="IN_FILE" />
-
-
-		<br>
-		<br>
-
-		<form:input type="hidden" path="ownerEmailAddress"
-			value="${SimpleUser.emailAddress}" />
-
-
-		<br>
-		<br>
-
-
 		<input type="submit" value="Submit" />
+
 
 		<br>
 		<br>

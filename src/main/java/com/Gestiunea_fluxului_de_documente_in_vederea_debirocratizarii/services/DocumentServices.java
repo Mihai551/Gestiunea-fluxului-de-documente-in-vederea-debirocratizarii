@@ -23,14 +23,15 @@ public class DocumentServices {
 
 	}
 
-	public static void addDocument(DocumentPackage thePackage) {
+	public static boolean addDocument(DocumentPackage thePackage) {
 
 		if (DocumentsDAO.checkDocExistence(thePackage) == false && thePackage.getPackageName() != null
-				&& thePackage.getDocumentContent() != null && thePackage.getDocumentName() != null) {
+				&& thePackage.getOwnerEmailAddress() != null && thePackage.getDocumentName() != null) {
 
 			DocumentsDAO.addDocument(thePackage);
-
-		}
+			return true;
+		} else
+			return false;
 
 	}
 
@@ -53,7 +54,7 @@ public class DocumentServices {
 		}
 	}
 
-	public static void Sign(DocumentsModel documents, String typeOfSigner) {
+	public static boolean Sign(DocumentsModel documents, String typeOfSigner) {
 
 		List<String> signers = DocumentsDAO.pullSignatures(documents);
 		if ((!signers.contains(documents.getOwnerEmailAddress())) && typeOfSigner.equalsIgnoreCase("owner")) {
@@ -61,6 +62,8 @@ public class DocumentServices {
 			DocumentsDAO.Sign(documents, typeOfSigner);
 
 			System.out.println(DocumentsDAO.pullSignatures(documents));
+
+			return true;
 		}
 
 		if ((!signers.contains(documents.getPermissionEmailAddress())) && !(typeOfSigner.equalsIgnoreCase("owner"))) {
@@ -76,7 +79,10 @@ public class DocumentServices {
 			} catch (Exception e) {
 
 			}
+			return true;
 		}
+
+		return false;
 
 	}
 

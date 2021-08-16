@@ -17,7 +17,7 @@ public class DocumentRowMapper implements RowMapper<Doc> {
 		document.setOwnerEmailAddress(rs.getString("ownerEmailAddress"));
 		document.setPackageName(rs.getString("packageName"));
 		document.setDocumentName(rs.getString("documentName"));
-		document.setDocumentContent(rs.getBytes("documentContent"));
+		document.setId(rs.getString("id"));
 
 		return document;
 	}

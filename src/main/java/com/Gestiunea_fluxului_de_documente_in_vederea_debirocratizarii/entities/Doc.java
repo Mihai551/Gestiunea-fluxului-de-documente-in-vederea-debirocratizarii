@@ -33,6 +33,8 @@ public class Doc {
 	private String action;
 
 	private byte[] documentContent;
+	
+	private String id;
 
 	private static boolean isNull;
 
@@ -101,4 +103,6 @@ public class Doc {
 		} catch (IOException ex) {
 		}
 	}
+
+	
 }
