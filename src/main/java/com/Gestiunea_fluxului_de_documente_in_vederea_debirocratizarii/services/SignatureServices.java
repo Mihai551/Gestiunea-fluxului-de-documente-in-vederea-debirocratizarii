@@ -16,16 +16,17 @@ import com.aspose.words.Document;
 
 public class SignatureServices {
 
-	public static void digitalSign(String ownerEmailAddress, String packageName, String documentName, String signer) throws FileNotFoundException, Exception {
+	public static void digitalSign(String ownerEmailAddress, String packageName, String documentName, String signer)
+			throws FileNotFoundException, Exception {
 
 		DocumentPackage auxDoc = new DocumentPackage();
 		auxDoc.setDocumentName(documentName);
 		auxDoc.setOwnerEmailAddress(ownerEmailAddress);
 		auxDoc.setPackageName(packageName);
-			
+
 		Doc doc = DocumentsDAO.pullDocument(auxDoc);
-		
-		String OUT_FILE ="C:\\Users\\Mihai\\Desktop\\Documents\\" + doc.getId() +".pdf";
+
+		String OUT_FILE = "C:\\Users\\Mihai\\Desktop\\Documents\\" + doc.getId() + ".pdf";
 
 		// ADD SIGNATURES
 
@@ -33,16 +34,13 @@ public class SignatureServices {
 		license.setLicense(new java.io.FileInputStream(
 				"C:\\Users\\Mihai\\eclipse-jee-2018-09-win32-x86_64-workspace\\Gestiunea-fluxului-de-documente-in-vederea-debirocratizarii\\lib\\Aspose.PDF.Java.lic"));
 
-		
-
-			System.out.println(OUT_FILE);
-			@SuppressWarnings("deprecation")
-			PdfFileSignature pdfSign = new PdfFileSignature(OUT_FILE, OUT_FILE);
-			Rectangle rect = new Rectangle(100, 100, 200, 100);
-			pdfSign.sign(1, false, rect,
-					new PKCS7("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\" + signer + "P12.p12", "password"));
-			pdfSign.save(OUT_FILE);
-		
+		System.out.println(OUT_FILE);
+		@SuppressWarnings("deprecation")
+		PdfFileSignature pdfSign = new PdfFileSignature(OUT_FILE, OUT_FILE);
+		Rectangle rect = new Rectangle(100, 100, 200, 100);
+		pdfSign.sign(1, true, rect,
+				new PKCS7("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\" + signer + "P12.p12", "password"));
+		pdfSign.save(OUT_FILE);
 
 	}
 
@@ -52,31 +50,32 @@ public class SignatureServices {
 		license.setLicense(new java.io.FileInputStream(
 				"C:\\Users\\Mihai\\eclipse-jee-2018-09-win32-x86_64-workspace\\Gestiunea-fluxului-de-documente-in-vederea-debirocratizarii\\lib\\Aspose.PDF.Java.lic"));
 
-		String home = System.getProperty("user.home");
-		String _dataDir = home + "/Downloads/";
+		String _dataDir = "C:\\Users\\Mihai\\Desktop\\Documents\\";
 
-		List<String> validSignatures = new ArrayList<String>();
+		DocumentPackage theDocument = new DocumentPackage();
+		theDocument.setOwnerEmailAddress(documents.getOwnerEmailAddress());
+		theDocument.setPackageName(documents.getPackageName());
+		theDocument.setDocumentName(documents.getDocumentName());
 
-		List<String> list = DocumentsDAO.pullSignatures(documents);
-		int index = 1;
+		Doc doc = DocumentsDAO.pullDocument(theDocument);
 
-		PdfFileSignature pdfSign = new PdfFileSignature();
-		pdfSign.bindPdf(_dataDir + documents.getDocumentName() + ".pdf");
-		for (String i : list) {
 
-			if (pdfSign.verifySignature("Signature" + index)) {
-				System.out.println(i + "'s signature is valid");
+		//List<String> list = DocumentsDAO.pullSignatures(documents);
 
-				validSignatures.add(i);
-
-			} else {
-				System.out.println(i + "'s signature is not valid");
+		com.aspose.pdf.facades.PdfFileSignature pdfSign = new com.aspose.pdf.facades.PdfFileSignature();
+		pdfSign.bindPdf(_dataDir + doc.getId() + ".pdf");
+		if (pdfSign.containsSignature()) {
+			java.util.List<String> sigNames = pdfSign.getSignNames();
+			if (sigNames.size() > 0) {
+				for (String s : sigNames)
+					System.out.println(s + " " + pdfSign.getContactInfo(s) + " " + pdfSign.getSignerName(s));
 			}
-
-			index++;
 		}
 		pdfSign.close();
-		return validSignatures;
+
+		// }
+		// pdfSign.close();
+		return null;
 	}
 
 }
