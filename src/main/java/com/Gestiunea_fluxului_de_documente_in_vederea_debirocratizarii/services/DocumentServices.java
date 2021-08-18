@@ -1,7 +1,9 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services;
 
 import java.awt.Rectangle;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
@@ -59,6 +61,17 @@ public class DocumentServices {
 		List<String> signers = DocumentsDAO.pullSignatures(documents);
 		if ((!signers.contains(documents.getOwnerEmailAddress())) && typeOfSigner.equalsIgnoreCase("owner")) {
 
+			try {
+				if (new FileInputStream("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\" + documents.getOwnerEmailAddress()
+						+ "P12.p12") == null) {
+					System.out.println("utilziatorul nu are certificat");
+					return false;
+				}
+			} catch (Exception e) {
+				System.out.println("utilziatorul nu are certificat");
+				return false;
+			}
+
 			DocumentsDAO.Sign(documents, typeOfSigner);
 
 			System.out.println(DocumentsDAO.pullSignatures(documents));
@@ -67,6 +80,16 @@ public class DocumentServices {
 		}
 
 		if ((!signers.contains(documents.getPermissionEmailAddress())) && !(typeOfSigner.equalsIgnoreCase("owner"))) {
+
+			try {
+				if (new FileInputStream("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\"
+						+ documents.getPermissionEmailAddress() + "P12.p12") == null) {
+					System.out.println("utilziatorul nu are certificat");
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
 
 			DocumentsDAO.Sign(documents, typeOfSigner);
 			System.out.println(DocumentsDAO.pullSignatures(documents));
@@ -77,6 +100,7 @@ public class DocumentServices {
 				EmailService email = new EmailService(documents.getOwnerEmailAddress(), "new signature", text);
 				email.start();
 			} catch (Exception e) {
+				System.out.println("utilziatorul nu are certificat");
 
 			}
 			return true;
