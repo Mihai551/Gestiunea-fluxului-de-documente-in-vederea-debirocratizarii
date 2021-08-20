@@ -1,6 +1,7 @@
 package com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,12 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentsModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.PackagesModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.Permission;
+import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SigningFlow;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimpleUser;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.services.OtherServices;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 public class DocumentsDAO {
 
@@ -36,7 +40,7 @@ public class DocumentsDAO {
 		parameters.put("ownerEmailAddress", thePackage.getOwnerEmailAddress());
 		parameters.put("packageName", thePackage.getPackageName());
 		parameters.put("documentName", thePackage.getDocumentName());
-		//parameters.put("documentContent", thePackage.getDocumentContent());
+		// parameters.put("documentContent", thePackage.getDocumentContent());
 		simpleJdbcInsert.execute(parameters);
 
 	}
@@ -244,8 +248,6 @@ public class DocumentsDAO {
 		}
 
 	}
-	
-	
 
 	public static List<String> pullOwnersList(SimpleUser theUser) {
 
@@ -377,6 +379,122 @@ public class DocumentsDAO {
 		} catch (Exception e) {
 			return null;
 		}
+
+	}
+
+	public static List<String> pullPermissionsOfPackage(SimplePackage thePackage) {
+
+		try {
+
+			String query = "SELECT emailAddress FROM permissions WHERE ownerEmailAddress = ? AND packageName = ? AND permission = 'Sign'";
+
+			List<String> users = new ArrayList<String>();
+
+			List<Map<String, Object>> Map = ((jdbcTemplate.queryForList(query, thePackage.getOwnerEmailAddress(),
+					thePackage.getPackageName())));
+
+			for (Map<String, Object> map : Map) {
+
+				users.add((String) map.get("emailAddress"));
+
+			}
+			return users;
+
+		} catch (Exception e) {
+
+			return null;
+		}
+
+	}
+
+	public static void addStep(SigningFlow signingflow) {
+
+		String query = "UPDATE permissions SET step = ? WHERE ownerEmailAddress = ? AND packageName = ? AND emailAddress =?";
+		jdbcTemplate.update(query, signingflow.getStep(), signingflow.getOwnerEmailAddress(),
+				signingflow.getPackageName(), signingflow.getUser());
+	}
+
+	public static void setSigningFlowEnable(String enable_disable, SimplePackage thePackage) {
+
+		String query = "UPDATE packages SET signingFlowEnable = ? WHERE ownerEmailAddress = ? AND packageName = ?";
+		jdbcTemplate.update(query, enable_disable, thePackage.getOwnerEmailAddress(), thePackage.getPackageName());
+	}
+
+	public static String setSigningFlowEnableFromDB(SimplePackage thePackage) {
+		String query = "SELECT signingFlowEnable FROM packages WHERE ownerEmailAddress = ? AND packageName = ?";
+
+		List<Map<String, Object>> packagesMap = (jdbcTemplate.queryForList(query, thePackage.getOwnerEmailAddress(),
+				thePackage.getPackageName()));
+		try {
+			return packagesMap.get(0).get("signingFlowEnable").toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	// DE VERIFICAT DE AICI
+
+	public static List<Integer> pullSteps(SimplePackage thePackage) {
+		System.out.println("pullSteps1");
+		String query = "SELECT step FROM permissions WHERE ownerEmailAddress = ? AND packageName = ? AND permission = 'Sign'";
+		System.out.println("pullSteps2");
+		List<Map<String, Object>> packagesMap = (jdbcTemplate.queryForList(query, thePackage.getOwnerEmailAddress(),
+				thePackage.getPackageName()));
+		System.out.println("pullSteps3");
+		List<Integer> steps = new ArrayList<Integer>();
+		System.out.println("pullSteps4");
+		for (Map<String, Object> map : packagesMap) {
+			System.out.println("pullSteps in for before if");
+			if (!steps.contains(Integer.parseInt(map.get("step").toString()))) {
+
+				System.out.println("pullSteps in for IN if");
+
+				steps.add(Integer.parseInt(map.get("step").toString()));
+				System.out.println(Integer.parseInt(map.get("step").toString()));
+				System.out.println("pullSteps in for IN if AFTER add");
+
+				System.out.println("pullSteps5");
+			}
+			System.out.println("pullSteps6");
+		}
+		System.out.println("pullSteps7");
+
+		Collections.sort(steps);
+		for (int step : steps) {
+			System.out.println(step);
+		}
+		return steps;
+	}
+
+	public static int signatureStep(DocumentsModel documents, String signature) {
+		System.out.println("signatureStep 1");
+		String query = "SELECT step FROM permissions WHERE ownerEmailAddress = ? AND packageName = ? AND emailAddress = ? AND permission = 'Sign'";
+		System.out.println("signatureStep 2");
+		List<Map<String, Object>> permissionsMap = (jdbcTemplate.queryForList(query, documents.getOwnerEmailAddress(),
+				documents.getPackageName(), signature));
+		System.out.println("signatureStep 3");
+		System.out.println(Integer.parseInt(permissionsMap.get(0).get("step").toString()));
+		System.out.println("signatureStep 4");
+		return Integer.parseInt(permissionsMap.get(0).get("step").toString());
+
+	}
+
+	public static List<String> permissionsByStep(DocumentsModel documents, int step) {
+
+		String query = "SELECT emailAddress FROM permissions WHERE ownerEmailAddress = ? AND packageName = ? AND step = ? AND permission = 'Sign'";
+
+		List<Map<String, Object>> permissionsMap = (jdbcTemplate.queryForList(query, documents.getOwnerEmailAddress(),
+				documents.getPackageName(), step));
+
+		List<String> permissionsByStep = new ArrayList();
+
+		for (Map<String, Object> map : permissionsMap) {
+
+			permissionsByStep.add((String) map.get("emailAddress"));
+
+		}
+
+		return permissionsByStep;
 
 	}
 

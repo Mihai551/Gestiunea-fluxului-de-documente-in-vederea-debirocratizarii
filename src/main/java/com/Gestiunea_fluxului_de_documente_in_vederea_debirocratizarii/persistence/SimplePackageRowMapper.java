@@ -17,8 +17,9 @@ public class SimplePackageRowMapper implements RowMapper<SimplePackage> {
         
         simplePackage.setOwnerEmailAddress(rs.getString("ownerEmailAddress"));
         simplePackage.setPackageName(rs.getString("packageName"));     
-        simplePackage.setPackageDescription(rs.getString("packageDescription"));    
-
+        simplePackage.setPackageDescription(rs.getString("packageDescription")); 
+        simplePackage.setSigningFlowEnable(rs.getString("signingFlowEnable"));
+        System.out.println("rowmapper " + simplePackage.getSigningFlowEnable());
         return simplePackage;
     }
 }

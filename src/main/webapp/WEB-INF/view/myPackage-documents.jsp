@@ -50,7 +50,26 @@
 		<input type="submit" value="Submit" />
 	</form:form>
 
+	<br>
+	<br>
 
+	<form:form action="enable-disalbe-signingFlow"
+		modelAttribute="myPackage">
+
+		<form:input type="hidden" path="ownerEmailAddress"
+			value="${myPackage.ownerEmailAddress}" />
+
+		<form:input type="hidden" path="packageName"
+			value="${myPackage.packageName}" />
+
+		<form:input type="hidden" path="signingFlowEnable"
+			value="${myPackage.signingFlowEnable}" />
+
+		<input type="submit" value="${enable_disable}" />
+	</form:form>
+
+	<br>
+	<br>
 	<br>
 	<br>
 
@@ -77,6 +96,27 @@
 			type="submit" value="Submit" />
 
 	</form>
+
+	<br>
+	<br>
+
+	<form:form action="define-signing-flow" modelAttribute="myPackage">
+
+
+		<br>
+		<br>
+		<form:input type="hidden" path="ownerEmailAddress"
+			value="${myPackage.ownerEmailAddress}" />
+
+		<form:input type="hidden" path="packageName"
+			value="${myPackage.packageName}" />
+
+		<input type="submit" value="Define signing flow" />
+	</form:form>
+
+	<br>
+	<br>
+
 
 	<c:forEach items="${signatures}" var="signature">
 		<td>Signed by: ${signature}<br> <br>

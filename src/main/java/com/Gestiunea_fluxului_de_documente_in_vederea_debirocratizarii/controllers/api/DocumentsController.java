@@ -31,19 +31,18 @@ public class DocumentsController {
 
 		theModel.addAttribute("SimpleUser", theUser);
 
-		byte[] encoded = Doc.pdfToBlob(thePackage.getIN_FILE());
-		thePackage.setDocumentContent(encoded);
-
-
 		// add simple package
 		DocumentServices.addPackage(thePackage);
-
+		thePackage.setPermissionEmailAddress(thePackage.getOwnerEmailAddress());
+		thePackage.setPermission("Sign");
+		DocumentServices.addPermission(thePackage);
 		return "forward:/new-package-of-documents";
 
 	}
 
 	@RequestMapping("/my-document")
-	public String viewDoc(HttpServletRequest request, @ModelAttribute("documents") DocumentsModel documents, Model theModel) throws Exception {
+	public String viewDoc(HttpServletRequest request, @ModelAttribute("documents") DocumentsModel documents,
+			Model theModel) throws Exception {
 
 		try {
 
@@ -81,8 +80,8 @@ public class DocumentsController {
 	}
 
 	@RequestMapping("/document")
-	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel, HttpServletResponse response)
-			throws Exception {
+	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel,
+			HttpServletResponse response) throws Exception {
 
 		documents.setPermissions(DocumentsDAO.checkPermissions(documents));
 
@@ -93,8 +92,6 @@ public class DocumentsController {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
 
-				
-				
 				return "forward:/getPDF";
 			}
 
@@ -124,21 +121,46 @@ public class DocumentsController {
 
 		return "forward:/package-for-me";
 	}
-	
+
 	@PostMapping("/add-permission")
 	public String addPermission(HttpServletRequest request) {
 		DocumentPackage thePackage = new DocumentPackage();
-		
+
 		thePackage.setOwnerEmailAddress(request.getParameter("ownerEmailAddress"));
 		thePackage.setPackageName(request.getParameter("packageName"));
 		thePackage.setPermission(request.getParameter("permission"));
 		thePackage.setPermissionEmailAddress(request.getParameter("permissionEmailAddress"));
-		
+
 		// add permission
 		DocumentServices.addPermission(thePackage);
-		
+
 		return "forward:/my-package";
-		
+
 	}
 
+	@PostMapping("/add-step")
+	public String addStep(@ModelAttribute("signingFlow") SigningFlow signingFlow, Model theModel) {
+		SimplePackage thePackage = new SimplePackage();
+		thePackage.setOwnerEmailAddress(signingFlow.getOwnerEmailAddress());
+		System.out.println(signingFlow.getOwnerEmailAddress());
+		thePackage.setPackageName(signingFlow.getPackageName());
+		System.out.println(signingFlow.getPackageName());
+
+		System.out.println("add step   " + thePackage.getOwnerEmailAddress() + "   " + thePackage.getPackageName());
+		theModel.addAttribute("myPackage", thePackage);
+
+		DocumentsDAO.addStep(signingFlow);
+		return "forward:/define-signing-flow";
+
+	}
+
+	@PostMapping("enable-disalbe-signingFlow")
+	public String enableDisableSigningFlow(@ModelAttribute("myPackage") SimplePackage thePackage, Model theModel) {
+
+		DocumentServices.enableOrDisable(thePackage);
+		theModel.addAttribute("myPackage", thePackage);
+
+		return "forward:/my-package";
+
+	}
 }

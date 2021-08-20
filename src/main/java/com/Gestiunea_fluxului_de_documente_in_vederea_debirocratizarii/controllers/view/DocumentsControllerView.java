@@ -15,6 +15,8 @@ import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence.AccountDAO;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.persistence.DocumentsDAO;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 @Controller
 public class DocumentsControllerView {
 
@@ -57,9 +59,20 @@ public class DocumentsControllerView {
 	public String myPackage(@ModelAttribute("myPackage") SimplePackage thePackage, Model theModel) {
 		DocumentsModel documents = new DocumentsModel();
 		documents = DocumentsDAO.pullDocuments(thePackage);
+		thePackage.setSigningFlowEnable(DocumentsDAO.setSigningFlowEnableFromDB(thePackage));
+		String enable_disable = "Enable signing flow option";
+
+		try {
+			if (thePackage.getSigningFlowEnable().equalsIgnoreCase("1")) {
+				enable_disable = "Disable signing flow option";
+			}
+		} catch (Exception e) {
+
+		}
 
 		theModel.addAttribute("documents", documents);
 		theModel.addAttribute("myPackage", thePackage);
+		theModel.addAttribute("enable_disable", enable_disable);
 
 		return "myPackage-documents";
 	}
@@ -91,8 +104,6 @@ public class DocumentsControllerView {
 	@RequestMapping(value = "package-for-me", method = RequestMethod.POST)
 	public String packageForMe(@ModelAttribute("thePackage") SimplePackage thePackage, Model theModel) {
 
-		
-
 		DocumentsModel documents = new DocumentsModel();
 		documents = DocumentsDAO.pullDocuments(thePackage);
 
@@ -102,5 +113,23 @@ public class DocumentsControllerView {
 		return "package-for-me";
 
 	}
-	
+
+	@RequestMapping(value = "define-signing-flow", method = RequestMethod.POST)
+	public String defineSigningFlow(@ModelAttribute("myPackage") SimplePackage thePackage, Model theModel) {
+		List<String> users = DocumentsDAO.pullPermissionsOfPackage(thePackage);
+		
+		for (String user : users) {
+			System.out.println(user);
+		}
+		SigningFlow theSigningFlow = new SigningFlow();
+		theModel.addAttribute("myPackage", thePackage);
+		System.out.println("define-signing-flow   " + thePackage.getOwnerEmailAddress());
+		System.out.println("define-signing-flow   " + thePackage.getPackageName());
+		theModel.addAttribute("users", users);
+		theModel.addAttribute("signingFlow", theSigningFlow);
+
+		return "define-signing-flow";
+
+	}
+
 }

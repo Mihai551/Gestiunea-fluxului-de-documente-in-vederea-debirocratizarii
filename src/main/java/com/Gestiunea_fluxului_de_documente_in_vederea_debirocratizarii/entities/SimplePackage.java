@@ -12,6 +12,7 @@ public class SimplePackage {
 	private String ownerEmailAddress;
 	private String packageDescription;
 	private String packageName;
+	private String signingFlowEnable;
 	
 	private List<String> permissions;
 	private String permissionEmailAddress;
