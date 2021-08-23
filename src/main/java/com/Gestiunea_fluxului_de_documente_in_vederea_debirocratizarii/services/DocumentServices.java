@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentPackage;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.DocumentsModel;
 import com.Gestiunea_fluxului_de_documente_in_vederea_debirocratizarii.entities.SimplePackage;
@@ -61,23 +63,30 @@ public class DocumentServices {
 		}
 	}
 
-	public static boolean Sign(DocumentsModel documents, String typeOfSigner) {
+	public static String Sign(DocumentsModel documents, String typeOfSigner) {
+
 		System.out.println(
 				"sign-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
 		System.out.println("Actual step from Sign  " + DocumentServices.actualStep(documents));
 
 		List<String> signers = DocumentsDAO.pullSignatures(documents);
+		for (String s : signers) {
+			System.out.println(s + " -signers");
+		}
+
 		if ((!signers.contains(documents.getOwnerEmailAddress())) && typeOfSigner.equalsIgnoreCase("owner")) {
 
 			try {
 				if (new FileInputStream("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\" + documents.getOwnerEmailAddress()
 						+ "P12.p12") == null) {
 					System.out.println("utilziatorul nu are certificat");
-					return false;
+
+					return "You need a digital certificate.";
 				}
 			} catch (Exception e) {
 				System.out.println("utilziatorul nu are certificat");
-				return false;
+
+				return "You need a digital certificate.";
 			}
 
 			SimplePackage thePackage = new SimplePackage();
@@ -92,10 +101,12 @@ public class DocumentServices {
 				if (typeOfSigner.equalsIgnoreCase("owner")
 						&& allowedSigners.contains(documents.getOwnerEmailAddress())) {
 					DocumentsDAO.Sign(documents, typeOfSigner);
-					return true;
+
+					return "Successfully signed.";
 				} else {
 					System.out.println("WRONG STEP!");
-					return false;
+
+					return "Wrong step.";
 				}
 
 			}
@@ -104,11 +115,11 @@ public class DocumentServices {
 
 			System.out.println(DocumentsDAO.pullSignatures(documents));
 
-			return true;
+			return "Successfully signed.";
 		}
-
+		System.out.println(documents.getPermissionEmailAddress() + "   if ((!signers.contains(documents.getPermissionEmailAddress()))");
 		if ((!signers.contains(documents.getPermissionEmailAddress())) && !(typeOfSigner.equalsIgnoreCase("owner"))) {
-
+			System.out.println(documents.getPermissionEmailAddress() + "   if ((!signers.contains(documents.getPermissionEmailAddress()))");
 			SimplePackage thePackage = new SimplePackage();
 			thePackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
 			thePackage.setPackageName(documents.getPackageName());
@@ -121,10 +132,12 @@ public class DocumentServices {
 				if (new FileInputStream("C:\\Program Files\\Java\\jdk-15.0.2\\bin\\"
 						+ documents.getPermissionEmailAddress() + "P12.p12") == null) {
 					System.out.println("utilziatorul nu are certificat");
-					return false;
+
+					return "You need a digital certificate.";
 				}
 			} catch (Exception e) {
-				return false;
+
+				return "You need a digital certificate.";
 			}
 
 			if (Integer.parseInt(thePackage.getSigningFlowEnable()) == 1) {
@@ -140,15 +153,16 @@ public class DocumentServices {
 						EmailService email = new EmailService(documents.getOwnerEmailAddress(), "new signature", text);
 						email.start();
 					} catch (Exception e) {
-						System.out.println("utilziatorul nu are certificat");
+						// System.out.println("utilziatorul nu are certificat");
 
 					}
 
-					return true;
+					return "Successfully signed.";
 
 				} else {
 					System.out.println("WRONG STEP!");
-					return false;
+
+					return "Wrong step.";
 				}
 			}
 
@@ -164,28 +178,24 @@ public class DocumentServices {
 				System.out.println("utilziatorul nu are certificat");
 
 			}
-			return true;
+
+			return "Successfully signed.";
 		}
 
-		return false;
+		return "You have already signed.";
 
 	}
 
 	public static void enableOrDisable(SimplePackage thePackage) {
 
 		try {
-			System.out.println(thePackage.getSigningFlowEnable() + " AICI");
 
 			if (thePackage.getSigningFlowEnable().equalsIgnoreCase("1")) {
-				System.out.println("IF1");
 				thePackage.setSigningFlowEnable("0");
 				DocumentsDAO.setSigningFlowEnable(thePackage.getSigningFlowEnable(), thePackage);
-				System.out.println("IF2");
 			} else {
-				System.out.println("ELSE1");
 				thePackage.setSigningFlowEnable("1");
 				DocumentsDAO.setSigningFlowEnable(thePackage.getSigningFlowEnable(), thePackage);
-				System.out.println("ELSE2");
 
 			}
 		} catch (Exception e) {
@@ -197,27 +207,22 @@ public class DocumentServices {
 
 	}
 
-	// DE VERIFICAT DE AICI
+	
 
 	public static int actualStep(DocumentsModel documents) {
-		System.out.println("ACTUAL STEP 1");
 
 		int actualStep;
 
 		List<String> signatures = DocumentsDAO.pullSignatures(documents); // get signatures
-		System.out.println("ACTUAL STEP 2");
 		SimplePackage thePackage = new SimplePackage();
 		thePackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
 		thePackage.setPackageName(documents.getPackageName());
 		List<Integer> steps = DocumentsDAO.pullSteps(thePackage); // get list of steps
-		System.out.println("ACTUAL STEP 3");
 
 		String lastSignature;
 		if (signatures.size() > 0) {
 			lastSignature = signatures.get(signatures.size() - 1); // last signature
-			System.out.println("ACTUAL STEP 4");
 		} else {
-			System.out.println("ACTUAL STEP ELSE");
 			for (Integer i : steps) {
 				System.out.println(i);
 			}
@@ -226,29 +231,20 @@ public class DocumentServices {
 		}
 
 		int lastSignerStep = DocumentsDAO.signatureStep(documents, lastSignature); // step of last signature
-		System.out.println("ACTUAL STEP 5");
 		List<String> permissionsByStep = DocumentsDAO.permissionsByStep(documents, lastSignerStep); // users at the step
-		System.out.println("ACTUAL STEP 6");
 		if (signatures.containsAll(permissionsByStep)) {
-			System.out.println("ACTUAL STEP 7");
 			try {
 				actualStep = steps.get((steps.indexOf(lastSignerStep) + 1)); // next step
-				System.out.println("ACTUAL STEP 8");
 			} catch (Exception e) {
-				System.out.println("ACTUAL STEP 9");
-				actualStep = actualStep = steps.get((steps.indexOf(lastSignerStep)));
+				actualStep = steps.get((steps.indexOf(lastSignerStep)));
 
-				System.out.println("ACTUAL STEP 10");
 
 			}
 
 		} else {
-			System.out.println("ACTUAL STEP 11");
 
 			actualStep = steps.get((steps.indexOf(lastSignerStep))); // this step
-			System.out.println("ACTUAL STEP 12");
 		}
-		System.out.println("ACTUAL STEP 13");
 		return actualStep;
 
 	}

@@ -16,5 +16,6 @@ public class SimplePackage {
 	
 	private List<String> permissions;
 	private String permissionEmailAddress;
+	
 
 }

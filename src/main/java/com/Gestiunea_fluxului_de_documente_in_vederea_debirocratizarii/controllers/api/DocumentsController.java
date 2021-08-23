@@ -44,6 +44,8 @@ public class DocumentsController {
 	public String viewDoc(HttpServletRequest request, @ModelAttribute("documents") DocumentsModel documents,
 			Model theModel) throws Exception {
 
+		String alert;
+
 		try {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
@@ -53,7 +55,11 @@ public class DocumentsController {
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign")) {
-				if (DocumentServices.Sign(documents, "owner")) {
+				alert = DocumentServices.Sign(documents, "owner");
+				theModel.addAttribute("alert", alert);
+				System.out.println(alert + " MYPACKAGE ALERT");
+
+				if (alert.equalsIgnoreCase("Successfully signed.")) {
 					SignatureServices.digitalSign(documents.getOwnerEmailAddress(), documents.getPackageName(),
 							documents.getDocumentName(), documents.getOwnerEmailAddress());
 				}
@@ -83,11 +89,11 @@ public class DocumentsController {
 	public String viewDocWithPermission(@ModelAttribute("documents") DocumentsModel documents, Model theModel,
 			HttpServletResponse response) throws Exception {
 
+		String alert;
+
 		documents.setPermissions(DocumentsDAO.checkPermissions(documents));
 
-		for (String x : documents.getPermissions()) {
-			System.out.println("/document " + x);
-		}
+		
 		try {
 
 			if (documents.getAction().equalsIgnoreCase("View")) {
@@ -96,7 +102,12 @@ public class DocumentsController {
 			}
 
 			if (documents.getAction().equalsIgnoreCase("Sign") && documents.getPermissions().contains("Sign")) {
-				if (DocumentServices.Sign(documents, "notOwner")) {
+
+				alert = DocumentServices.Sign(documents, "notOwner");
+				theModel.addAttribute("alert", alert);
+				
+
+				if (alert.equalsIgnoreCase("Successfully signed.")) {
 					SignatureServices.digitalSign(documents.getOwnerEmailAddress(), documents.getPackageName(),
 							documents.getDocumentName(), documents.getPermissionEmailAddress());
 
@@ -104,12 +115,13 @@ public class DocumentsController {
 			}
 			SimplePackage myPackage = new SimplePackage();
 			myPackage.setOwnerEmailAddress(documents.getOwnerEmailAddress());
-			myPackage.setPackageName(documents.getOwnerEmailAddress());
-			theModel.addAttribute("myPackage", myPackage);
+			myPackage.setPackageName(documents.getPackageName());
+
+			theModel.addAttribute("thePackage", myPackage);
 
 			if (documents.getAction().equalsIgnoreCase("Signatures")) {
 
-				// de regandit
+				
 
 				List<String> signatures = SignatureServices.digitalSignatureValidation(documents);
 				theModel.addAttribute("signatures", signatures);

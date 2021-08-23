@@ -17,5 +17,6 @@ public class DocumentsModel {
 
 	public List<Doc> list;
 	private String documentName;
+	//private String alert;
 
 }

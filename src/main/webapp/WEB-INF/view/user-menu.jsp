@@ -8,6 +8,8 @@
 <head>
 <title>User Menu</title>
 <h2 User Menu />
+
+
 </head>
 
 <body>
@@ -39,8 +41,7 @@
 
 	<br>
 	<br>
-	<form:form action="my-packages"
-		modelAttribute="SimpleUser">
+	<form:form action="my-packages" modelAttribute="SimpleUser">
 
 		<form:input type="hidden" path="emailAddress"
 			value="${SimplUuser.emailAddress}" />
@@ -58,9 +59,8 @@
 
 	<br>
 	<br>
-	
-	<form:form action="select-owner"
-		modelAttribute="SimpleUser">
+
+	<form:form action="select-owner" modelAttribute="SimpleUser">
 
 		<form:input type="hidden" path="emailAddress"
 			value="${SimplUuser.emailAddress}" />

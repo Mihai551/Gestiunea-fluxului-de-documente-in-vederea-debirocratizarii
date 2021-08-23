@@ -73,7 +73,7 @@ public class DocumentsControllerView {
 		theModel.addAttribute("documents", documents);
 		theModel.addAttribute("myPackage", thePackage);
 		theModel.addAttribute("enable_disable", enable_disable);
-
+		
 		return "myPackage-documents";
 	}
 
@@ -103,14 +103,15 @@ public class DocumentsControllerView {
 
 	@RequestMapping(value = "package-for-me", method = RequestMethod.POST)
 	public String packageForMe(@ModelAttribute("thePackage") SimplePackage thePackage, Model theModel) {
-
+		
+		System.out.println(thePackage.getOwnerEmailAddress());
 		DocumentsModel documents = new DocumentsModel();
 		documents = DocumentsDAO.pullDocuments(thePackage);
 
 		theModel.addAttribute("documents", documents);
 		theModel.addAttribute("thePackage", thePackage);
-
-		return "package-for-me";
+		
+		return "package-for-me-documents";
 
 	}
 
